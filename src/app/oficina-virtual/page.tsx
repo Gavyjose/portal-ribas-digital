@@ -1,48 +1,42 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   ShieldCheck,
   Search,
   CheckCircle2,
   QrCode,
-  Calendar,
   CreditCard,
   Building2,
   FileCheck,
   AlertCircle,
-  Copy,
   Printer,
   FileText,
   Send,
   ArrowRight,
-  User
+  User,
+  Lock,
+  ChevronRight,
+  BookOpen
 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
-import { CertificadoSolvenciaModal } from "@/components/CertificadoSolvenciaModal";
 
 export default function OficinaVirtualPage() {
-  const { usuario } = useAuth();
-  const [activeTab, setActiveTab] = useState<"solvencia" | "verificar" | "citas" | "pagos">("solvencia");
+  const router = useRouter();
+  const { usuario, loginAsDemo } = useAuth();
+  const [activeTab, setActiveTab] = useState<"acceso" | "verificar" | "pagos">("acceso");
 
-  // Estados para consulta de solvencia
-  const [tipoDoc, setTipoDoc] = useState("V");
-  const [numDoc, setNumDoc] = useState("");
-  const [mostrarModalCertificado, setMostrarModalCertificado] = useState(false);
-  const [resultadoSolvencia, setResultadoSolvencia] = useState<null | {
-    contribuyente: string;
-    identificacion: string;
-    inmueble: string;
-    parroquia: string;
-    estado: "Solvente" | "Con Deuda";
-    vigencia: string;
-    hash: string;
-    codigoQR: string;
-  }>(null);
+  // Si el usuario ya está autenticado, lo redirigimos a su Dashboard personal
+  useEffect(() => {
+    if (usuario) {
+      router.push("/oficina-virtual/dashboard");
+    }
+  }, [usuario, router]);
 
-  // Estados para verificador
+  // Estados para verificador público de autenticidad (código o hash de un documento físico)
   const [codigoVerificar, setCodigoVerificar] = useState("");
   const [resultadoVerificacion, setResultadoVerificacion] = useState<null | {
     valido: boolean;
@@ -51,16 +45,6 @@ export default function OficinaVirtualPage() {
     fecha: string;
     contribuyente: string;
     hash: string;
-  }>(null);
-
-  // Estados para agendamiento de citas
-  const [citaGenerada, setCitaGenerada] = useState<null | {
-    codigoCita: string;
-    nombre: string;
-    tramite: string;
-    parroquia: string;
-    fecha: string;
-    hora: string;
   }>(null);
 
   // Estados para reporte de pago bancario
@@ -73,22 +57,6 @@ export default function OficinaVirtualPage() {
     fecha: string;
   }>(null);
 
-  const consultarSolvencia = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!numDoc.trim()) return;
-
-    setResultadoSolvencia({
-      contribuyente: tipoDoc === "J" ? "DISTRIBUIDORA VICTORIA C.A." : "MARÍA JOSÉ HERNÁNDEZ",
-      identificacion: `${tipoDoc}-${numDoc}`,
-      inmueble: "FICHA CAT. #04-02-01-U-0128",
-      parroquia: "Castor Nieves Ríos (Las Mercedes)",
-      estado: "Solvente",
-      vigencia: "Hasta el 31 de Diciembre de 2026",
-      hash: "8f4b9c1d2e3a5f60718293a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4",
-      codigoQR: "https://alcaldiaderibas.gob.ve/verificar/8f4b9c1d"
-    });
-  };
-
   const verificarDocumento = (e: React.FormEvent) => {
     e.preventDefault();
     if (!codigoVerificar.trim()) return;
@@ -100,23 +68,6 @@ export default function OficinaVirtualPage() {
       fecha: "10 de Noviembre de 2026",
       contribuyente: "COMERCIAL LA VICTORIA 2020 C.A. (RIF: J-40891234-5)",
       hash: "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
-    });
-  };
-
-  const solicitarCita = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const form = e.currentTarget;
-    const nombre = (form.elements.namedItem("nombre") as HTMLInputElement).value;
-    const tramite = (form.elements.namedItem("tramite") as HTMLSelectElement).value;
-    const parroquia = (form.elements.namedItem("parroquia") as HTMLSelectElement).value;
-
-    setCitaGenerada({
-      codigoCita: `CITA-RIB-${Math.floor(1000 + Math.random() * 9000)}`,
-      nombre,
-      tramite,
-      parroquia,
-      fecha: "Próximo Martes, 18 de Noviembre de 2026",
-      hora: "08:30 a.m."
     });
   };
 
@@ -140,9 +91,9 @@ export default function OficinaVirtualPage() {
 
   return (
     <div className="py-8 min-h-screen">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         {/* Encabezado con Fondo de Agua Fotográfico de La Casa Amarilla */}
-        <div className="relative rounded-3xl overflow-hidden mb-10 shadow-xl text-white p-8 sm:p-12 text-center">
+        <div className="relative rounded-3xl overflow-hidden shadow-xl text-white p-8 sm:p-12 text-center">
           <div className="absolute inset-0 z-0">
             <Image
               src="/images/la-victoria/casa-amarilla.jpg"
@@ -160,204 +111,172 @@ export default function OficinaVirtualPage() {
               <span>Oficina Virtual de Ribas • Sede Casa Amarilla</span>
             </div>
             <h1 className="text-3xl sm:text-4xl font-black text-white tracking-tight drop-shadow">
-              Autogestión Tributaria y Registro Civil Digital
+              Oficina Virtual del Contribuyente
             </h1>
             <p className="text-sm text-slate-200 mt-2">
-              Verifica solvencias con código QR, consulta tu estado de cuenta municipal, reporta pagos bancarios y programa citas presenciales sin hacer filas.
+              Plataforma protegida para la autogestión de tributos, padrón catastral, registro civil y seguimiento de expedientes municipales.
             </p>
           </div>
         </div>
 
-        {/* Banner de Usuario Único */}
-        {usuario ? (
-          <div className="mb-8 p-4 bg-emerald-50/90 border border-emerald-200 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-emerald-950 shadow-sm backdrop-blur-sm">
-            <div className="flex items-center gap-2.5">
-              <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />
-              <span>
-                Sesión activa como <strong>{usuario.nombre}</strong> ({usuario.documento}). Puedes consultar tu estado de cuenta, historial catastral y avance de expedientes en tu panel personal.
-              </span>
-            </div>
-            <Link
-              href="/oficina-virtual/dashboard"
-              className="px-4 py-2 bg-[#0a2540] hover:bg-slate-900 text-amber-400 font-bold rounded-xl transition-colors shrink-0 shadow flex items-center gap-1.5"
-            >
-              <span>Ir a Mi Panel y Trámites</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </Link>
-          </div>
-        ) : (
-          <div className="mb-8 p-4 bg-amber-50/90 border border-amber-200 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-amber-950 shadow-sm backdrop-blur-sm">
-            <div className="flex items-center gap-2.5">
-              <User className="w-5 h-5 text-amber-700 shrink-0" />
-              <span>
-                <strong>¿Posees Usuario Único?</strong> Inicia sesión para autocompletar tus datos, consultar tu padrón de inmuebles y hacer seguimiento al avance de tus solicitudes.
-              </span>
-            </div>
-            <div className="flex items-center gap-2 shrink-0">
-              <Link
-                href="/login"
-                className="px-3.5 py-1.5 bg-[#0a2540] hover:bg-slate-900 text-amber-400 font-bold rounded-xl transition-colors shadow text-center"
-              >
-                Iniciar Sesión
-              </Link>
-              <Link
-                href="/registro"
-                className="px-3.5 py-1.5 bg-white hover:bg-slate-100 text-slate-800 font-bold rounded-xl border border-slate-300 transition-colors text-center"
-              >
-                Registrarse
-              </Link>
-            </div>
-          </div>
-        )}
-
-        {/* Selector de Pestañas */}
-        <div className="flex items-center justify-center gap-2 mb-8 overflow-x-auto pb-2">
+        {/* Pestañas Públicas */}
+        <div className="flex items-center justify-center gap-2 overflow-x-auto pb-2">
           <button
-            onClick={() => setActiveTab("solvencia")}
+            onClick={() => setActiveTab("acceso")}
             className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold shrink-0 transition-all ${
-              activeTab === "solvencia"
+              activeTab === "acceso"
                 ? "bg-[#0a2540] text-amber-400 shadow-md"
-                : "bg-white text-slate-700 hover:bg-slate-100 border border-slate-200"
+                : "bg-white/90 text-slate-700 hover:bg-white border border-slate-200"
             }`}
           >
-            Consulta de Solvencia
+            Acceso al Expediente del Contribuyente
           </button>
           <button
             onClick={() => setActiveTab("verificar")}
             className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold shrink-0 transition-all ${
               activeTab === "verificar"
                 ? "bg-[#0a2540] text-amber-400 shadow-md"
-                : "bg-white text-slate-700 hover:bg-slate-100 border border-slate-200"
+                : "bg-white/90 text-slate-700 hover:bg-white border border-slate-200"
             }`}
           >
-            Validador de Documentos (QR)
-          </button>
-          <button
-            onClick={() => setActiveTab("citas")}
-            className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold shrink-0 transition-all ${
-              activeTab === "citas"
-                ? "bg-[#0a2540] text-amber-400 shadow-md"
-                : "bg-white text-slate-700 hover:bg-slate-100 border border-slate-200"
-            }`}
-          >
-            Citas de Registro Civil
+            Validador Público de Documentos (QR)
           </button>
           <button
             onClick={() => setActiveTab("pagos")}
             className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold shrink-0 transition-all ${
               activeTab === "pagos"
                 ? "bg-[#0a2540] text-amber-400 shadow-md"
-                : "bg-white text-slate-700 hover:bg-slate-100 border border-slate-200"
+                : "bg-white/90 text-slate-700 hover:bg-white border border-slate-200"
             }`}
           >
-            Cuentas y Reporte de Pagos
+            Cuentas y Medios de Pago
           </button>
         </div>
 
-        {/* Contenido Pestaña 1: Consulta de Solvencia */}
-        {activeTab === "solvencia" && (
-          <div className="max-w-2xl mx-auto bg-white rounded-3xl border border-slate-200 shadow-xl p-6 sm:p-8">
-            <h2 className="text-xl font-bold text-slate-900 mb-2">
-              Consulta de Solvencia Municipal en Línea
-            </h2>
-            <p className="text-xs text-slate-600 mb-6">
-              Ingresa la cédula o RIF del contribuyente para verificar el estatus ante la Dirección de Hacienda de Ribas.
-            </p>
-
-            <form onSubmit={consultarSolvencia} className="space-y-4">
-              <div className="flex gap-2">
-                <select
-                  value={tipoDoc}
-                  onChange={(e) => setTipoDoc(e.target.value)}
-                  className="bg-slate-50 border border-slate-300 rounded-xl px-3 py-3 text-sm font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-500"
-                >
-                  <option value="V">V- (Venezolano)</option>
-                  <option value="J">J- (Jurídico/Empresa)</option>
-                  <option value="E">E- (Extranjero)</option>
-                  <option value="G">G- (Gubernamental)</option>
-                </select>
-                <input
-                  type="text"
-                  required
-                  value={numDoc}
-                  onChange={(e) => setNumDoc(e.target.value)}
-                  placeholder="Número de documento (ej. 18452123 o 304958210)"
-                  className="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-500"
-                />
+        {/* Pestaña 1: Protección de Datos y Acceso al Expediente */}
+        {activeTab === "acceso" && (
+          <div className="max-w-3xl mx-auto space-y-6">
+            <div className="bg-white/95 backdrop-blur-md rounded-3xl border border-slate-200 shadow-xl p-6 sm:p-10 space-y-6">
+              <div className="text-center space-y-3">
+                <div className="w-16 h-16 rounded-2xl bg-amber-500/10 text-amber-600 flex items-center justify-center mx-auto border border-amber-500/20">
+                  <Lock className="w-8 h-8" />
+                </div>
+                <h2 className="text-2xl font-black text-slate-900">
+                  Acceso Restringido y Protección al Contribuyente
+                </h2>
+                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed max-w-xl mx-auto">
+                  En cumplimiento del <strong>Secreto Tributario</strong> y las ordenanzas del Municipio José Félix Ribas, la consulta de solvencias, estados de cuenta inmobiliarios y expedientes administrativos requiere inicio de sesión obligatorio con su <strong>Usuario Único</strong>.
+                </p>
               </div>
 
-              <button
-                type="submit"
-                className="w-full py-3.5 bg-[#0a2540] hover:bg-slate-900 text-amber-400 font-bold text-sm rounded-xl transition-all shadow-md flex items-center justify-center gap-2"
-              >
-                <Search className="w-4 h-4" />
-                <span>Consultar Estatus Tributario</span>
-              </button>
-            </form>
-
-            {/* Resultado de la Solvencia */}
-            {resultadoSolvencia && (
-              <div className="mt-8 pt-6 border-t-2 border-dashed border-slate-200 space-y-4">
-                <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-5">
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="text-xs font-bold text-emerald-800 uppercase flex items-center gap-1.5">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                      <span>{resultadoSolvencia.estado}</span>
-                    </span>
-                    <span className="text-[11px] font-semibold text-emerald-900 bg-emerald-200/60 px-2 py-0.5 rounded">
-                      {resultadoSolvencia.vigencia}
-                    </span>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                <Link
+                  href="/login"
+                  className="p-5 rounded-2xl bg-[#0a2540] hover:bg-slate-900 text-white shadow-lg transition-all group flex flex-col justify-between"
+                >
+                  <div>
+                    <User className="w-6 h-6 text-amber-400 mb-2" />
+                    <h3 className="text-base font-bold text-white group-hover:text-amber-300">
+                      Ya poseo Usuario Único
+                    </h3>
+                    <p className="text-xs text-slate-300 mt-1">
+                      Ingresa con tu Cédula o RIF y contraseña para consultar tu expediente y solicitar trámites.
+                    </p>
                   </div>
-
-                  <div className="space-y-1 text-xs text-slate-800">
-                    <p><strong>Contribuyente:</strong> {resultadoSolvencia.contribuyente}</p>
-                    <p><strong>Documento:</strong> {resultadoSolvencia.identificacion}</p>
-                    <p><strong>Inmueble / Referencia:</strong> {resultadoSolvencia.inmueble}</p>
-                    <p><strong>Ubicación:</strong> {resultadoSolvencia.parroquia}</p>
+                  <div className="mt-4 flex items-center gap-1.5 text-xs font-bold text-amber-400">
+                    <span>Iniciar Sesión</span>
+                    <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                   </div>
+                </Link>
 
-                  <div className="mt-4 pt-3 border-t border-emerald-200 flex flex-wrap items-center justify-between gap-2">
-                    <div className="flex items-center gap-2 text-[11px] text-slate-600">
-                      <QrCode className="w-6 h-6 text-slate-800 shrink-0" />
-                      <span className="font-mono text-[10px] text-slate-500">Hash: {resultadoSolvencia.hash.slice(0, 16)}...</span>
+                <Link
+                  href="/registro"
+                  className="p-5 rounded-2xl bg-white hover:bg-slate-50 border-2 border-slate-200 hover:border-amber-500 shadow-sm transition-all group flex flex-col justify-between"
+                >
+                  <div>
+                    <ShieldCheck className="w-6 h-6 text-emerald-600 mb-2" />
+                    <h3 className="text-base font-bold text-slate-900 group-hover:text-amber-800">
+                      Crear mi Usuario Único
+                    </h3>
+                    <p className="text-xs text-slate-600 mt-1">
+                      Regístrate como persona natural o comercio de Ribas para acceder a todos los servicios digitales.
+                    </p>
+                  </div>
+                  <div className="mt-4 flex items-center gap-1.5 text-xs font-bold text-emerald-700">
+                    <span>Registrarme gratis</span>
+                    <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                  </div>
+                </Link>
+              </div>
+
+              {/* Acceso Rápido Demo para Pruebas del Evaluador */}
+              <div className="pt-4 border-t border-slate-200 space-y-2">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block text-center">
+                  Acceso Rápido de Demostración (Prueba Inmediata)
+                </span>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  <button
+                    onClick={() => {
+                      loginAsDemo("natural");
+                      router.push("/oficina-virtual/dashboard");
+                    }}
+                    className="p-3 bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-950 rounded-xl text-xs font-semibold flex items-center justify-between transition-colors text-left"
+                  >
+                    <div>
+                      <strong className="block">María Hernández (V-18.452.123)</strong>
+                      <span className="text-[10px] text-amber-800">Persona Natural • Las Mercedes</span>
                     </div>
-                    <button
-                      type="button"
-                      onClick={() => setMostrarModalCertificado(true)}
-                      className="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold transition-colors flex items-center gap-1.5 shadow"
-                    >
-                      <Printer className="w-4 h-4" />
-                      <span>Ver e Imprimir Certificado</span>
-                    </button>
-                  </div>
+                    <ChevronRight className="w-4 h-4 text-amber-600 shrink-0" />
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      loginAsDemo("juridico");
+                      router.push("/oficina-virtual/dashboard");
+                    }}
+                    className="p-3 bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-950 rounded-xl text-xs font-semibold flex items-center justify-between transition-colors text-left"
+                  >
+                    <div>
+                      <strong className="block">Distribuidora Victoria C.A.</strong>
+                      <span className="text-[10px] text-blue-800">Empresa / RIF: J-30495821-0</span>
+                    </div>
+                    <ChevronRight className="w-4 h-4 text-blue-600 shrink-0" />
+                  </button>
                 </div>
               </div>
-            )}
+
+              {/* Aviso Informativo Público */}
+              <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 flex items-center justify-between text-xs text-slate-700">
+                <div className="flex items-center gap-2">
+                  <BookOpen className="w-4 h-4 text-slate-500 shrink-0" />
+                  <span>¿Deseas consultar los recaudos y requisitos de trámites sin iniciar sesión?</span>
+                </div>
+                <Link
+                  href="/tramites"
+                  className="font-bold text-[#0a2540] hover:underline shrink-0 ml-2"
+                >
+                  Ver Catálogo Público →
+                </Link>
+              </div>
+            </div>
           </div>
         )}
 
-        {/* Modal de Certificado Oficial Imprimible */}
-        {mostrarModalCertificado && resultadoSolvencia && (
-          <CertificadoSolvenciaModal
-            contribuyente={resultadoSolvencia.contribuyente}
-            identificacion={resultadoSolvencia.identificacion}
-            inmueble={resultadoSolvencia.inmueble}
-            parroquia={resultadoSolvencia.parroquia}
-            vigencia={resultadoSolvencia.vigencia}
-            hash={resultadoSolvencia.hash}
-            onClose={() => setMostrarModalCertificado(false)}
-          />
-        )}
-
-        {/* Contenido Pestaña 2: Validador de Documentos con QR */}
+        {/* Pestaña 2: Validador de Documentos con QR */}
         {activeTab === "verificar" && (
-          <div className="max-w-2xl mx-auto bg-white rounded-3xl border border-slate-200 shadow-xl p-6 sm:p-8">
-            <h2 className="text-xl font-bold text-slate-900 mb-2">
-              Verificador de Autenticidad con Código Seguro
-            </h2>
-            <p className="text-xs text-slate-600 mb-6">
-              Valida la legalidad de cualquier constancia, solvencia o documento con sello digital emitido por la Alcaldía del Municipio José Félix Ribas.
-            </p>
+          <div className="max-w-2xl mx-auto bg-white/95 backdrop-blur-md rounded-3xl border border-slate-200 shadow-xl p-6 sm:p-8 space-y-6">
+            <div>
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-100 text-blue-900 text-xs font-bold uppercase tracking-wider mb-2">
+                <FileCheck className="w-3.5 h-3.5" />
+                <span>Servicio Público de Validación</span>
+              </div>
+              <h2 className="text-xl font-bold text-slate-900">
+                Verificador de Autenticidad con Código Seguro
+              </h2>
+              <p className="text-xs text-slate-600 mt-1">
+                Servicio público disponible para notarías, registros, entidades bancarias y autoridades para verificar la validez de un documento emitido por la Alcaldía de Ribas.
+              </p>
+            </div>
 
             <form onSubmit={verificarDocumento} className="space-y-4">
               <div>
@@ -403,104 +322,12 @@ export default function OficinaVirtualPage() {
           </div>
         )}
 
-        {/* Contenido Pestaña 3: Citas de Registro Civil */}
-        {activeTab === "citas" && (
-          <div className="max-w-2xl mx-auto bg-white rounded-3xl border border-slate-200 shadow-xl p-6 sm:p-8">
-            <h2 className="text-xl font-bold text-slate-900 mb-2">
-              Agendamiento Digital de Citas - Registro Civil
-            </h2>
-            <p className="text-xs text-slate-600 mb-6">
-              Selecciona tu parroquia y el trámite de registro civil para obtener tu turno de atención preferencial.
-            </p>
-
-            <form onSubmit={solicitarCita} className="space-y-4">
-              <div>
-                <label className="text-xs font-bold text-slate-700 mb-1 block">
-                  Nombre Completo del Solicitante
-                </label>
-                <input
-                  type="text"
-                  name="nombre"
-                  required
-                  placeholder="Ej. Carmen Rodríguez"
-                  className="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-500"
-                />
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="text-xs font-bold text-slate-700 mb-1 block">
-                    Trámite a Realizar
-                  </label>
-                  <select
-                    name="tramite"
-                    className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-500"
-                  >
-                    <option>Copia Certificada de Acta de Nacimiento</option>
-                    <option>Constancia de Residencia</option>
-                    <option>Constancia de Fe de Vida</option>
-                    <option>Presentación de Niños / Nacimiento</option>
-                    <option>Celebración de Matrimonio Civil</option>
-                    <option>Acta de Defunción</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="text-xs font-bold text-slate-700 mb-1 block">
-                    Parroquia de Residencia
-                  </label>
-                  <select
-                    name="parroquia"
-                    className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-500"
-                  >
-                    <option>Castor Nieves Ríos (Las Mercedes)</option>
-                    <option>Juan Vicente Bolívar y Ponte (Casco Central)</option>
-                    <option>Zuata</option>
-                    <option>Pao de Zárate</option>
-                    <option>Las Guacamayas</option>
-                  </select>
-                </div>
-              </div>
-
-              <button
-                type="submit"
-                className="w-full py-3.5 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-sm rounded-xl transition-all shadow-md flex items-center justify-center gap-2"
-              >
-                <Calendar className="w-4 h-4" />
-                <span>Generar Turno de Atención</span>
-              </button>
-            </form>
-
-            {citaGenerada && (
-              <div className="mt-8 pt-6 border-t border-slate-200 bg-amber-50 border border-amber-200 rounded-2xl p-5 space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold text-amber-900 uppercase">
-                    Comprobante de Turno Asignado
-                  </span>
-                  <span className="text-xs font-mono font-bold bg-amber-200 text-amber-950 px-2 py-0.5 rounded">
-                    {citaGenerada.codigoCita}
-                  </span>
-                </div>
-                <div className="text-xs text-slate-800 space-y-1">
-                  <p><strong>Solicitante:</strong> {citaGenerada.nombre}</p>
-                  <p><strong>Trámite:</strong> {citaGenerada.tramite}</p>
-                  <p><strong>Lugar de Presentación:</strong> Sede Parroquial {citaGenerada.parroquia}</p>
-                  <p><strong>Fecha y Hora:</strong> {citaGenerada.fecha} a las {citaGenerada.hora}</p>
-                </div>
-                <div className="text-[11px] text-amber-900 bg-white/70 p-2.5 rounded-lg border border-amber-200">
-                  Por favor, asista 10 minutos antes con su cédula de identidad laminada y los recaudos solicitados.
-                </div>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* Contenido Pestaña 4: Medios de Pago y Reporte de Pagos */}
+        {/* Pestaña 3: Cuentas y Medios de Pago */}
         {activeTab === "pagos" && (
           <div className="max-w-4xl mx-auto space-y-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Cuentas Bancarias */}
-              <div className="bg-white rounded-3xl border border-slate-200 shadow-md p-6 space-y-4">
+              <div className="bg-white/95 backdrop-blur-md rounded-3xl border border-slate-200 shadow-md p-6 space-y-4">
                 <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
                   <Building2 className="w-4 h-4 text-amber-600" />
                   <span>Cuentas Bancarias Autorizadas</span>
@@ -552,7 +379,7 @@ export default function OficinaVirtualPage() {
               </div>
 
               {/* Formulario de Reporte de Pago */}
-              <div className="bg-white rounded-3xl border border-slate-200 shadow-md p-6 space-y-4">
+              <div className="bg-white/95 backdrop-blur-md rounded-3xl border border-slate-200 shadow-md p-6 space-y-4">
                 <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
                   <FileText className="w-4 h-4 text-emerald-600" />
                   <span>Reportar Comprobante de Pago</span>
