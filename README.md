@@ -7,11 +7,12 @@ Plataforma oficial de gobierno electrónico (*e-Gov*) y atención ciudadana desa
 
 ## 🏛️ Características Principales
 
-1. **Oficina Virtual & Validador Digital (`/oficina-virtual`):**
-   * Consulta de solvencias tributarias por Cédula o RIF.
-   * Generación de certificado formal oficial imprimible en PDF con Hash SHA-256 y Código QR.
-   * Verificador de autenticidad para terceros y autoridades.
-   * Agendamiento digital de citas para Registro Civil (partidas de nacimiento, constancias de residencia, matrimonios).
+1. **Oficina Virtual & Usuario Único (`/oficina-virtual` y `/oficina-virtual/dashboard`):**
+   * Cuenta única para contribuyentes (personas naturales y jurídicas) con aislamiento estricto de privacidad y secreto tributario.
+   * Consulta protegida de estados de cuenta de Hacienda Municipal, Catastro y Fichas Inmobiliarias.
+   * Generación y descarga de certificados de solvencia con Hash SHA-256, firma digital y Código QR.
+   * Validador público de autenticidad para notarías, registros y entidades bancarias.
+   * Citas digitales para Registro Civil (partidas de nacimiento, constancias de residencia, matrimonios).
    * Conciliación y reporte de transferencias bancarias y Pago Móvil C2P.
 
 2. **Ribas Resuelve (`/ribas-resuelve`):**
