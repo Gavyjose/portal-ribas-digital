@@ -1,0 +1,12 @@
+{
+  "municipio": "José Félix Ribas",
+  "estado": "Aragua",
+  "pais": "Venezuela",
+  "fechaExportacion": "2026-11-13T04:41:00.919Z",
+  "archivosProcesados": [
+    "aseo.ts",
+    "noticias.ts",
+    "parroquias.ts",
+    "tramites.ts"
+  ]
+}

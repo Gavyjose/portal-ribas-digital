@@ -1,0 +1,34 @@
+{
+  "name": "Alcaldía del Municipio José Félix Ribas - Ribas Digital",
+  "short_name": "Ribas Digital",
+  "description": "Portal Oficial y Oficina Virtual del Municipio José Félix Ribas, La Victoria, Aragua.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a2540",
+  "theme_color": "#0a2540",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Oficina Virtual",
+      "url": "/oficina-virtual",
+      "description": "Solvencias y pagos de impuestos"
+    },
+    {
+      "name": "Ribas Resuelve",
+      "url": "/ribas-resuelve",
+      "description": "Reportes de servicios públicos"
+    },
+    {
+      "name": "Rutas de Aseo",
+      "url": "/aseo",
+      "description": "Cronograma de aseo urbano"
+    }
+  ]
+}
