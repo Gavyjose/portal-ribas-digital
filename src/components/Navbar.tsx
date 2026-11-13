@@ -13,17 +13,26 @@ import {
   BookOpen,
   Landmark,
   ShieldCheck,
-  ChevronRight
+  ChevronRight,
+  User,
+  LogOut
 } from "lucide-react";
+import { useAuth } from "@/context/AuthContext";
 
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname();
+  const { usuario, logout } = useAuth();
 
   const navLinks = [
     { name: "Inicio", href: "/" },
     { name: "Trámites", href: "/tramites", icon: FileText },
-    { name: "Oficina Virtual", href: "/oficina-virtual", icon: ShieldCheck, highlight: true },
+    {
+      name: usuario ? "Mi Expediente" : "Oficina Virtual",
+      href: usuario ? "/oficina-virtual/dashboard" : "/oficina-virtual",
+      icon: ShieldCheck,
+      highlight: true
+    },
     { name: "Ribas Resuelve", href: "/ribas-resuelve", icon: AlertCircle },
     { name: "Aseo Urbano", href: "/aseo", icon: Truck },
     { name: "Gacetas", href: "/gacetas", icon: BookOpen },
@@ -100,16 +109,46 @@ export function Navbar() {
                 </Link>
               );
             })}
+
+            {/* Usuario Único: Estado de Autenticación */}
+            <div className="ml-2 pl-2 border-l border-white/10 flex items-center gap-2">
+              {usuario ? (
+                <div className="flex items-center gap-2">
+                  <Link
+                    href="/oficina-virtual/dashboard"
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 hover:bg-emerald-500/30 transition-colors text-xs font-bold"
+                  >
+                    <User className="w-3.5 h-3.5 text-emerald-400" />
+                    <span className="max-w-[110px] truncate">{usuario.nombre.split(" ")[0]}</span>
+                  </Link>
+                  <button
+                    onClick={logout}
+                    title="Cerrar sesión"
+                    className="p-1.5 text-slate-400 hover:text-rose-400 hover:bg-white/5 rounded-lg transition-colors"
+                  >
+                    <LogOut className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              ) : (
+                <Link
+                  href="/login"
+                  className="px-3 py-1.5 rounded-lg border border-amber-400/40 text-amber-300 hover:bg-amber-400/10 text-xs font-bold transition-colors flex items-center gap-1.5"
+                >
+                  <User className="w-3.5 h-3.5" />
+                  <span>Ingresar</span>
+                </Link>
+              )}
+            </div>
           </nav>
 
           {/* Botón de Menú Móvil */}
           <div className="flex lg:hidden items-center gap-2">
             <Link
-              href="/oficina-virtual"
+              href={usuario ? "/oficina-virtual/dashboard" : "/login"}
               className="px-3 py-1.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs rounded-md shadow flex items-center gap-1"
             >
-              <ShieldCheck className="w-3.5 h-3.5" />
-              <span>Oficina Virtual</span>
+              <User className="w-3.5 h-3.5" />
+              <span>{usuario ? usuario.nombre.split(" ")[0] : "Ingresar"}</span>
             </Link>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -148,6 +187,30 @@ export function Navbar() {
               </Link>
             );
           })}
+
+          <div className="pt-3 border-t border-slate-800">
+            {usuario ? (
+              <button
+                onClick={() => {
+                  logout();
+                  setMobileMenuOpen(false);
+                }}
+                className="w-full py-2.5 px-3 text-left text-rose-400 hover:bg-rose-500/10 rounded-lg text-xs font-bold flex items-center gap-2"
+              >
+                <LogOut className="w-4 h-4" />
+                <span>Cerrar Sesión ({usuario.nombre})</span>
+              </button>
+            ) : (
+              <Link
+                href="/login"
+                onClick={() => setMobileMenuOpen(false)}
+                className="w-full py-2.5 px-3 bg-amber-500 text-slate-950 font-bold rounded-lg text-xs flex items-center justify-center gap-2"
+              >
+                <User className="w-4 h-4" />
+                <span>Iniciar Sesión / Registro de Usuario Único</span>
+              </Link>
+            )}
+          </div>
         </div>
       )}
     </header>
