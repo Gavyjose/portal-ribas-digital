@@ -2,6 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
   Landmark,
   Compass,
@@ -16,27 +17,36 @@ import { PARROQUIAS_RIBAS } from "@/data/parroquias";
 
 export default function MunicipioPage() {
   return (
-    <div className="py-12 bg-slate-50 min-h-screen">
+    <div className="py-8 min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-        {/* Cabecera Hero Histórica */}
-        <div className="relative rounded-3xl bg-gradient-to-br from-[#0a2540] via-[#12365c] to-[#06182a] text-white p-8 sm:p-12 overflow-hidden shadow-xl">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+        {/* Cabecera Hero Histórica con Fondo de Agua Fotográfico del Cuartel Mariano Montilla */}
+        <div className="relative rounded-3xl overflow-hidden shadow-2xl text-white p-8 sm:p-14">
+          <div className="absolute inset-0 z-0">
+            <Image
+              src="/images/la-victoria/cuartel-montilla.jpg"
+              alt="Monumento Histórico Cuartel Mariano Montilla - La Victoria, Aragua"
+              fill
+              priority
+              className="object-cover object-center scale-105"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#06182a]/95 via-[#0c2e50]/85 to-[#06182a]/95" />
+          </div>
 
           <div className="max-w-3xl space-y-4 relative z-10">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 text-xs font-bold uppercase tracking-wider">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 text-xs font-bold uppercase tracking-wider backdrop-blur-sm">
               <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-              <span>Cuna de la Juventud Heroica</span>
+              <span>Cuna de la Juventud Heroica • La Victoria</span>
             </div>
 
-            <h1 className="text-3xl sm:text-5xl font-black tracking-tight leading-tight">
+            <h1 className="text-3xl sm:text-5xl font-black tracking-tight leading-tight drop-shadow-md">
               Municipio José Félix Ribas
             </h1>
 
-            <p className="text-sm sm:text-base text-slate-300 leading-relaxed">
+            <p className="text-sm sm:text-base text-slate-200 leading-relaxed drop-shadow">
               Tierra gloriosa donde el 12 de Febrero de 1814 el General en Jefe José Félix Ribas, junto a seminaristas y estudiantes de Caracas, libró la heroica Batalla de La Victoria, inmortalizando la proclama patria:
             </p>
 
-            <blockquote className="border-l-4 border-amber-400 pl-4 py-1 italic text-amber-300 text-sm sm:text-base font-semibold">
+            <blockquote className="border-l-4 border-amber-400 pl-4 py-1.5 italic text-amber-300 text-sm sm:text-base font-bold bg-black/20 rounded-r-xl backdrop-blur-sm">
               &ldquo;No podemos optar entre vencer o morir: ¡necesario es vencer!&rdquo;
             </blockquote>
           </div>

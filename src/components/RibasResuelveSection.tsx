@@ -23,10 +23,10 @@ export function RibasResuelveSection() {
   ];
 
   return (
-    <section className="py-16 bg-slate-900 text-white relative overflow-hidden">
-      {/* Decoración de fondo */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-rose-600/10 rounded-full blur-3xl pointer-events-none"></div>
-      <div className="absolute bottom-0 left-0 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+    <section className="py-20 bg-watermark-cuartel-dark text-white relative overflow-hidden border-y border-slate-800">
+      {/* Luces atmosféricas */}
+      <div className="absolute top-0 right-0 w-96 h-96 bg-rose-600/15 rounded-full blur-3xl pointer-events-none"></div>
+      <div className="absolute bottom-0 left-0 w-96 h-96 bg-amber-500/15 rounded-full blur-3xl pointer-events-none"></div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">

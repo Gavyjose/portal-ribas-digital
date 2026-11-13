@@ -36,7 +36,7 @@ export function AseoUrbanoSection() {
   });
 
   return (
-    <section className="py-16 bg-white border-y border-slate-200">
+    <section className="py-16 bg-white/90 backdrop-blur-md border-y border-slate-200/80">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Cabecera de la Sección */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">

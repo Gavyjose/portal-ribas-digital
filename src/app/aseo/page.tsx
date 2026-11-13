@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import {
   Truck,
   MapPin,
@@ -24,20 +25,33 @@ export default function AseoPage() {
   });
 
   return (
-    <div className="py-12 bg-slate-50 min-h-screen">
+    <div className="py-8 min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Encabezado */}
-        <div className="text-center max-w-3xl mx-auto mb-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-100 text-emerald-900 text-xs font-bold uppercase tracking-wider mb-3">
-            <Truck className="w-3.5 h-3.5 text-emerald-700" />
-            <span>Mantenimiento Urbano y Ambiente</span>
+        {/* Encabezado con Fondo de Agua Fotográfico: Vista Panorámica de La Victoria */}
+        <div className="relative rounded-3xl overflow-hidden mb-10 shadow-xl text-white p-8 sm:p-12 text-center">
+          <div className="absolute inset-0 z-0">
+            <Image
+              src="/images/la-victoria/vista-aerea.jpg"
+              alt="Vista aérea de La Victoria y sus comunidades - Aragua"
+              fill
+              priority
+              className="object-cover object-center scale-105"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#06182a]/95 via-[#06241b]/85 to-[#06182a]/95" />
           </div>
-          <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-            Plan Integral de Recolección y Barrido
-          </h1>
-          <p className="text-sm sm:text-base text-slate-600 mt-2">
-            Conoce el cronograma de camiones compactadores y trimotos que atienden a las comunidades de La Victoria, Las Mercedes, La Mora, Zuata y zonas industriales.
-          </p>
+
+          <div className="relative z-10 max-w-3xl mx-auto space-y-3">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 text-xs font-bold uppercase tracking-wider backdrop-blur-sm">
+              <Truck className="w-3.5 h-3.5 text-emerald-400" />
+              <span>Mantenimiento Urbano • Plan Ribas Limpia y Bonita</span>
+            </div>
+            <h1 className="text-3xl sm:text-4xl font-black text-white tracking-tight drop-shadow">
+              Plan Integral de Recolección y Barrido
+            </h1>
+            <p className="text-sm text-slate-200 mt-2">
+              Conoce el cronograma de camiones compactadores y trimotos que atienden a las comunidades de La Victoria, Las Mercedes, La Mora, Zuata y zonas industriales.
+            </p>
+          </div>
         </div>
 
         {/* Buscador y Filtros */}

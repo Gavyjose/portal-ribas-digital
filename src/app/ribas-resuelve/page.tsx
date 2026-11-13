@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import {
   AlertCircle,
   Lightbulb,
@@ -85,20 +86,33 @@ export default function RibasResuelvePage() {
   };
 
   return (
-    <div className="py-12 bg-slate-50 min-h-screen">
+    <div className="py-8 min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Cabecera */}
-        <div className="text-center max-w-3xl mx-auto mb-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-rose-100 text-rose-900 text-xs font-bold uppercase tracking-wider mb-3">
-            <AlertCircle className="w-3.5 h-3.5 text-rose-600" />
-            <span>Sistema 1x10 y Atención Ciudadana</span>
+        {/* Encabezado con Fondo de Agua Fotográfico: Cuartel y Símbolos de Ribas */}
+        <div className="relative rounded-3xl overflow-hidden mb-10 shadow-xl text-white p-8 sm:p-12 text-center">
+          <div className="absolute inset-0 z-0">
+            <Image
+              src="/images/la-victoria/cuartel-castillo.jpg"
+              alt="Monumento y Cuartel de La Victoria - Aragua"
+              fill
+              priority
+              className="object-cover object-center scale-105"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#06182a]/95 via-[#2a0812]/85 to-[#06182a]/95" />
           </div>
-          <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-            Ribas Resuelve: Reportes de Servicios Públicos
-          </h1>
-          <p className="text-sm sm:text-base text-slate-600 mt-2">
-            Canal directo para reportar averías en alumbrado, agua potable, colectores caídos, bacheo o acumulación de desechos en tu comunidad.
-          </p>
+
+          <div className="relative z-10 max-w-3xl mx-auto space-y-3">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-rose-500/20 text-rose-300 border border-rose-400/30 text-xs font-bold uppercase tracking-wider backdrop-blur-sm">
+              <AlertCircle className="w-3.5 h-3.5 text-rose-400" />
+              <span>Atención Comunitaria Directa • Sistema 1x10</span>
+            </div>
+            <h1 className="text-3xl sm:text-4xl font-black text-white tracking-tight drop-shadow">
+              Ribas Resuelve: Reportes de Servicios Públicos
+            </h1>
+            <p className="text-sm text-slate-200 mt-2">
+              Canal directo para reportar averías en alumbrado, agua potable, colectores caídos, bacheo o acumulación de desechos en tu comunidad.
+            </p>
+          </div>
         </div>
 
         {/* Pestañas */}

@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
   FileText,
   Search,
@@ -40,20 +41,33 @@ export default function TramitesPage() {
   });
 
   return (
-    <div className="py-12 bg-slate-50 min-h-screen">
+    <div className="py-8 min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Cabecera */}
-        <div className="text-center max-w-3xl mx-auto mb-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-100 text-blue-900 text-xs font-bold uppercase tracking-wider mb-3">
-            <FileText className="w-3.5 h-3.5" />
-            <span>Ventanilla Única de Trámites</span>
+        {/* Encabezado con Fondo de Agua Fotográfico del Cuartel Mariano Montilla */}
+        <div className="relative rounded-3xl overflow-hidden mb-10 shadow-xl text-white p-8 sm:p-12 text-center">
+          <div className="absolute inset-0 z-0">
+            <Image
+              src="/images/la-victoria/cuartel-montilla.jpg"
+              alt="Cuartel Mariano Montilla - La Victoria, Aragua"
+              fill
+              priority
+              className="object-cover object-center scale-105"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#06182a]/95 via-[#0c2e50]/85 to-[#06182a]/95" />
           </div>
-          <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-            Catálogo Oficial de Trámites Municipales
-          </h1>
-          <p className="text-sm sm:text-base text-slate-600 mt-2">
-            Consulta los requisitos, aranceles, plazos y modalidades de solicitud para gestionar tus documentos en la Alcaldía de Ribas.
-          </p>
+
+          <div className="relative z-10 max-w-3xl mx-auto space-y-3">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/20 text-blue-300 border border-blue-400/30 text-xs font-bold uppercase tracking-wider backdrop-blur-sm">
+              <FileText className="w-3.5 h-3.5" />
+              <span>Ventanilla Única • Servicios Simplificados</span>
+            </div>
+            <h1 className="text-3xl sm:text-4xl font-black text-white tracking-tight drop-shadow">
+              Catálogo Oficial de Trámites Municipales
+            </h1>
+            <p className="text-sm text-slate-200 mt-2">
+              Consulta los requisitos, aranceles, plazos y modalidades de solicitud para gestionar tus documentos en la Alcaldía de Ribas.
+            </p>
+          </div>
         </div>
 
         {/* Barra de Filtros y Búsqueda */}

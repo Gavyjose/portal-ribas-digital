@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import {
   ShieldCheck,
   Search,
@@ -134,20 +135,33 @@ export default function OficinaVirtualPage() {
   };
 
   return (
-    <div className="py-12 bg-slate-50 min-h-screen">
+    <div className="py-8 min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Encabezado */}
-        <div className="text-center max-w-3xl mx-auto mb-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-100 text-amber-900 text-xs font-bold uppercase tracking-wider mb-3">
-            <ShieldCheck className="w-3.5 h-3.5" />
-            <span>Oficina Virtual de Ribas</span>
+        {/* Encabezado con Fondo de Agua Fotográfico de La Casa Amarilla */}
+        <div className="relative rounded-3xl overflow-hidden mb-10 shadow-xl text-white p-8 sm:p-12 text-center">
+          <div className="absolute inset-0 z-0">
+            <Image
+              src="/images/la-victoria/casa-amarilla.jpg"
+              alt="Casa Amarilla - Sede de la Alcaldía de Ribas"
+              fill
+              priority
+              className="object-cover object-center scale-105"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#06182a]/95 via-[#0a2540]/85 to-[#06182a]/95" />
           </div>
-          <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-            Autogestión Tributaria y Registro Civil Digital
-          </h1>
-          <p className="text-sm sm:text-base text-slate-600 mt-2">
-            Verifica solvencias con código QR, consulta tu estado de cuenta municipal, reporta pagos bancarios y programa citas presenciales sin hacer filas.
-          </p>
+
+          <div className="relative z-10 max-w-3xl mx-auto space-y-3">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-400/30 text-xs font-bold uppercase tracking-wider backdrop-blur-sm">
+              <ShieldCheck className="w-3.5 h-3.5" />
+              <span>Oficina Virtual de Ribas • Sede Casa Amarilla</span>
+            </div>
+            <h1 className="text-3xl sm:text-4xl font-black text-white tracking-tight drop-shadow">
+              Autogestión Tributaria y Registro Civil Digital
+            </h1>
+            <p className="text-sm text-slate-200 mt-2">
+              Verifica solvencias con código QR, consulta tu estado de cuenta municipal, reporta pagos bancarios y programa citas presenciales sin hacer filas.
+            </p>
+          </div>
         </div>
 
         {/* Selector de Pestañas */}
