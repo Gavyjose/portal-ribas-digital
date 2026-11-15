@@ -41,19 +41,57 @@ Plataforma oficial de gobierno electrónico (*e-Gov*) y atención ciudadana desa
 
 ---
 
-## 🚀 Puesta en Marcha en Desarrollo
+## ⚙️ Requisitos Previos
+
+Antes de comenzar, asegúrate de tener instalado en tu sistema:
+* **Node.js**: Versión 18.17.0 o superior (recomendado Node.js 20 LTS o 24).
+* **Git**: Para el control de versiones y clonación del repositorio.
+* **Gestor de paquetes**: `npm` (incluido con Node.js), `pnpm` o `yarn`.
+
+---
+
+## 🚀 Instalación y Puesta en Marcha
+
+### 1. Clonar el Repositorio
+
+Puedes clonar el proyecto mediante **HTTPS** o **SSH**:
 
 ```bash
-# Instalar dependencias
+# Opción A: Clonar con HTTPS (Recomendado)
+git clone https://github.com/Gavyjose/portal-ribas-digital.git
+
+# Opción B: Clonar con SSH
+git clone git@github.com:Gavyjose/portal-ribas-digital.git
+```
+
+### 2. Ingresar a la Carpeta del Proyecto
+
+```bash
+cd portal-ribas-digital
+```
+
+### 3. Instalar Dependencias
+
+```bash
 npm install
+```
 
-# Iniciar servidor de desarrollo en localhost:3000
+### 4. Ejecutar en Modo Desarrollo
+
+```bash
 npm run dev
+```
+Abre tu navegador en [http://localhost:3000](http://localhost:3000) para visualizar el portal en tiempo real con recarga automática (*Hot Reload*).
 
-# Generar compilación optimizada de producción
+---
+
+## 🏗️ Compilación y Producción
+
+```bash
+# Generar compilación optimizada para producción
 npm run build
 
-# Iniciar en modo producción
+# Iniciar el servidor con la versión compilada
 npm run start
 ```
 
