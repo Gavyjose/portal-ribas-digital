@@ -6,216 +6,339 @@ import Image from "next/image";
 import {
   Search,
   ShieldCheck,
-  FileText,
+  Building2,
   AlertCircle,
   Truck,
+  Landmark,
+  FileText,
+  Play,
+  Calendar,
   ArrowRight,
-  Sparkles,
   CheckCircle2,
-  MapPin
+  ChevronRight,
+  Sparkles,
+  MapPin,
+  Flame,
+  Layers
 } from "lucide-react";
 import { TRAMITES_MUNICIPALES } from "@/data/tramites";
+import { ZONAS_ASEO } from "@/data/aseo";
 
 export function HeroSection() {
   const [searchTerm, setSearchTerm] = useState("");
   const [isFocused, setIsFocused] = useState(false);
 
-  const filteredTramites = searchTerm.trim() === ""
-    ? []
-    : TRAMITES_MUNICIPALES.filter((t) =>
-        t.titulo.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        t.descripcion.toLowerCase().includes(searchTerm.toLowerCase())
-      ).slice(0, 4);
+  // Filtrado de trámites y zonas para la búsqueda predictiva
+  const filteredTramites =
+    searchTerm.trim() === ""
+      ? []
+      : TRAMITES_MUNICIPALES.filter(
+          (t) =>
+            t.titulo.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            t.descripcion.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            t.dependencia.toLowerCase().includes(searchTerm.toLowerCase())
+        ).slice(0, 3);
+
+  const filteredZonas =
+    searchTerm.trim() === ""
+      ? []
+      : ZONAS_ASEO.filter(
+          (z) =>
+            z.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            z.rutas.some((r) =>
+              r.sectores.toLowerCase().includes(searchTerm.toLowerCase())
+            )
+        ).slice(0, 2);
+
+  // Servicios / Edificios Especiales estilo Alcaldía de Caracas
+  const dependenciasEspeciales = [
+    {
+      id: "hacienda",
+      sigla: "HACIENDA",
+      nombre: "Pago de Impuestos",
+      detalle: "Solvencias y Patentes",
+      colorTag: "bg-red-700 text-white",
+      borderColor: "border-red-600/60 hover:border-red-500",
+      bgGradient: "from-[#0a192f]/90 via-[#0d213a]/80 to-[#1e0a12]/90",
+      href: "/oficina-virtual",
+      icon: ShieldCheck,
+      badge: "SUMAR Ribas",
+    },
+    {
+      id: "ribas-resuelve",
+      sigla: "1x10 RIBAS",
+      nombre: "Ribas Resuelve",
+      detalle: "Alumbrado, Agua y Vialidad",
+      colorTag: "bg-amber-600 text-white",
+      borderColor: "border-amber-500/60 hover:border-amber-400",
+      bgGradient: "from-[#0a192f]/90 via-[#1a1c23]/80 to-[#241407]/90",
+      href: "/ribas-resuelve",
+      icon: AlertCircle,
+      badge: "Sala Situacional",
+    },
+    {
+      id: "aseo",
+      sigla: "ASEO URBANO",
+      nombre: "Ribas Limpia y Bonita",
+      detalle: "Zonas A, B, C y D • Rutas",
+      colorTag: "bg-emerald-700 text-white",
+      borderColor: "border-emerald-600/60 hover:border-emerald-500",
+      bgGradient: "from-[#0a192f]/90 via-[#0e2722]/80 to-[#071d15]/90",
+      href: "/aseo",
+      icon: Truck,
+      badge: "Flota Activa",
+    },
+    {
+      id: "catastro",
+      sigla: "CATASTRO",
+      nombre: "Control Urbano",
+      detalle: "Fichas y Permisología",
+      colorTag: "bg-blue-700 text-white",
+      borderColor: "border-blue-600/60 hover:border-blue-500",
+      bgGradient: "from-[#0a192f]/90 via-[#0a2342]/80 to-[#051329]/90",
+      href: "/tramites",
+      icon: Building2,
+      badge: "Inmuebles",
+    },
+    {
+      id: "parroquias",
+      sigla: "PARROQUIAS",
+      nombre: "5 Parroquias",
+      detalle: "La Victoria, Zuata, Pao...",
+      colorTag: "bg-rose-700 text-white",
+      borderColor: "border-rose-600/60 hover:border-rose-500",
+      bgGradient: "from-[#0a192f]/90 via-[#1f0b14]/80 to-[#0a192f]/90",
+      href: "/municipio",
+      icon: Landmark,
+      badge: "Territorio",
+    },
+    {
+      id: "registro",
+      sigla: "REGISTRO",
+      nombre: "Registro Civil",
+      detalle: "Citas y Actas Digitales",
+      colorTag: "bg-purple-700 text-white",
+      borderColor: "border-purple-600/60 hover:border-purple-500",
+      bgGradient: "from-[#0a192f]/90 via-[#1a0f2e]/80 to-[#0a192f]/90",
+      href: "/oficina-virtual/dashboard",
+      icon: FileText,
+      badge: "Atención Civil",
+    },
+  ];
 
   return (
-    <section className="relative text-white pt-14 pb-24 px-4 sm:px-6 lg:px-8 overflow-hidden min-h-[580px] flex items-center">
-      {/* Fondo Fotográfico de La Victoria con efecto "Fondo de Agua / Overlay" */}
+    <section className="relative text-white py-12 lg:py-20 px-4 sm:px-6 lg:px-8 overflow-hidden min-h-[640px] flex items-center">
+      {/* Fondo Panorámico de La Victoria con Tratamiento Atmosférico estilo Caracas */}
       <div className="absolute inset-0 z-0">
         <Image
-          src="/images/la-victoria/cuartel-montilla.jpg"
-          alt="Cuartel Histórico Mariano Montilla - La Victoria, Aragua"
+          src="/images/la-victoria/vista-aerea.jpg"
+          alt="Panorámica del Municipio José Félix Ribas - La Victoria, Aragua"
           fill
           priority
           sizes="100vw"
-          className="object-cover object-center scale-105 transition-transform duration-1000"
+          className="object-cover object-center scale-105"
         />
-        {/* Máscara de degradado profundo para garantizar máximo contraste y elegancia institucional */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#06182a]/95 via-[#0a2540]/85 to-[#06182a]/90 backdrop-blur-[1px]" />
-        {/* Viñeta radial para concentrar la luz en el centro */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_20%,#06182a_90%)]" />
+        {/* Degradado y overlay con tono azul profundo para máxima legibilidad */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#051626]/95 via-[#08223d]/85 to-[#051626]/95 backdrop-blur-[1px]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,transparent_15%,#051626_95%)]" />
       </div>
 
       <div className="max-w-7xl mx-auto relative z-10 w-full">
-        {/* Cabecera del Hero */}
-        <div className="text-center max-w-3xl mx-auto space-y-4">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/20 border border-amber-400/40 text-amber-300 text-xs font-bold uppercase tracking-wider backdrop-blur-md shadow-lg">
-            <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-            <span>Portal Oficial • La Victoria • Municipio José Félix Ribas</span>
-          </div>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+          {/* ============================================================== */}
+          {/* COLUMNA IZQUIERDA: Titular, Búsqueda y CTAs estilo Caracas      */}
+          {/* ============================================================== */}
+          <div className="lg:col-span-7 space-y-6">
+            {/* Pill de la Alcaldía */}
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 text-xs font-bold uppercase tracking-wider backdrop-blur-md">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              <Building2 className="w-3.5 h-3.5 text-emerald-400" />
+              <span>Alcaldía de José Félix Ribas</span>
+            </div>
 
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-white leading-tight drop-shadow-md">
-            Gobierno Digital y Cercano para <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-amber-400 to-amber-500">La Victoria</span> y sus 5 Parroquias
-          </h1>
+            {/* Gran Titular Hero */}
+            <h1 className="text-3xl sm:text-5xl lg:text-5xl font-black text-white tracking-tight leading-[1.15] drop-shadow-md">
+              Transparencia, acción y comunidad al alcance de todos
+            </h1>
 
-          <p className="text-sm sm:text-base text-slate-200 max-w-2xl mx-auto leading-relaxed drop-shadow">
-            Realiza el pago de tus tributos, solicita citas de registro civil, reporta incidencias de servicios públicos y consulta gacetas desde cualquier lugar.
-          </p>
+            {/* Subtítulo */}
+            <p className="text-sm sm:text-base text-slate-200 max-w-xl leading-relaxed drop-shadow">
+              Portal oficial de la Alcaldía del Municipio Ribas. Realiza tus
+              trámites tributarios, consulta el cronograma de aseo urbano y
+              reporta incidencias comunitarias en un solo lugar.
+            </p>
 
-          {/* Barra de Búsqueda Predictiva Unificada */}
-          <div className="relative max-w-2xl mx-auto pt-4 text-left">
-            <div className={`relative flex items-center bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl transition-all duration-200 border-2 ${
-              isFocused ? "border-amber-400 ring-4 ring-amber-400/30 bg-white" : "border-white/40"
-            }`}>
-              <Search className="w-5 h-5 text-slate-500 ml-4 shrink-0" />
-              <input
-                type="text"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                onFocus={() => setIsFocused(true)}
-                onBlur={() => setTimeout(() => setIsFocused(false), 200)}
-                placeholder="¿Qué trámite o servicio buscas? Ej. Solvencia, Registro Civil, Aseo..."
-                className="w-full py-4 px-3 text-slate-900 placeholder-slate-400 text-sm sm:text-base focus:outline-none rounded-2xl bg-transparent"
-              />
-              {searchTerm && (
+            {/* Botones de Acción Estilo Caracas */}
+            <div className="flex flex-wrap items-center gap-3 pt-1">
+              <Link
+                href="/aseo"
+                className="px-5 py-3 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs uppercase tracking-wider shadow-lg hover:shadow-emerald-500/30 flex items-center gap-2 transition-all group"
+              >
+                <div className="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center">
+                  <Play className="w-3 h-3 fill-current text-white ml-0.5" />
+                </div>
+                <span>Ribas en movimiento</span>
+              </Link>
+
+              <Link
+                href="#noticias"
+                className="px-5 py-3 rounded-full bg-white/10 hover:bg-white/20 text-white font-bold text-xs uppercase tracking-wider border border-white/20 backdrop-blur-md transition-all flex items-center gap-2"
+              >
+                <Calendar className="w-4 h-4 text-slate-300" />
+                <span>Últimas noticias</span>
+              </Link>
+            </div>
+
+            {/* Barra de Búsqueda Predictiva Unificada en Píldora */}
+            <div className="relative max-w-xl pt-2">
+              <div
+                className={`relative flex items-center bg-white/95 backdrop-blur-md rounded-full shadow-2xl transition-all duration-200 border-2 p-1.5 ${
+                  isFocused
+                    ? "border-amber-400 ring-4 ring-amber-400/30 bg-white"
+                    : "border-white/40"
+                }`}
+              >
+                <Search className="w-5 h-5 text-slate-500 ml-3.5 shrink-0" />
+                <input
+                  type="text"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  onFocus={() => setIsFocused(true)}
+                  onBlur={() => setTimeout(() => setIsFocused(false), 250)}
+                  placeholder="¿Qué información necesitas? (Ej. Solvencia, Aseo, Las Mercedes...)"
+                  className="w-full py-2.5 px-3 text-slate-900 placeholder-slate-400 text-xs sm:text-sm focus:outline-none bg-transparent"
+                />
                 <button
-                  onClick={() => setSearchTerm("")}
-                  className="mr-3 text-xs bg-slate-200 hover:bg-slate-300 text-slate-700 px-2 py-1 rounded-md"
+                  onClick={() => setIsFocused(true)}
+                  className="px-5 py-2.5 bg-[#0a2540] hover:bg-slate-900 text-amber-400 font-bold text-xs rounded-full shadow transition-colors shrink-0"
                 >
-                  Limpiar
+                  Buscar
                 </button>
+              </div>
+
+              {/* Menú de Resultados Desplegable */}
+              {isFocused && (filteredTramites.length > 0 || filteredZonas.length > 0) && (
+                <div className="absolute left-0 right-0 top-full mt-2 bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden z-30 text-slate-800">
+                  {filteredTramites.length > 0 && (
+                    <div>
+                      <div className="p-2 bg-slate-50 text-[10px] font-bold text-slate-500 uppercase tracking-wider border-b">
+                        Trámites Encontrados
+                      </div>
+                      {filteredTramites.map((t) => (
+                        <Link
+                          key={t.id}
+                          href={t.enlaceAccion || "/tramites"}
+                          className="p-3 hover:bg-amber-50 flex items-center justify-between gap-2 border-b border-slate-100 last:border-none"
+                        >
+                          <div>
+                            <p className="text-xs font-bold text-slate-800">{t.titulo}</p>
+                            <p className="text-[10px] text-slate-500">{t.dependencia}</p>
+                          </div>
+                          <span className="text-[10px] bg-slate-100 text-slate-700 font-bold px-2 py-0.5 rounded">
+                            {t.modalidad}
+                          </span>
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+
+                  {filteredZonas.length > 0 && (
+                    <div>
+                      <div className="p-2 bg-slate-50 text-[10px] font-bold text-slate-500 uppercase tracking-wider border-b">
+                        Rutas y Zonas de Aseo
+                      </div>
+                      {filteredZonas.map((z) => (
+                        <Link
+                          key={z.id}
+                          href="/aseo"
+                          className="p-3 hover:bg-emerald-50 flex items-center justify-between gap-2 border-b border-slate-100 last:border-none"
+                        >
+                          <div>
+                            <p className="text-xs font-bold text-emerald-800">{z.nombre}</p>
+                            <p className="text-[10px] text-slate-500">Coordinador: {z.coordinador}</p>
+                          </div>
+                          <ChevronRight className="w-4 h-4 text-emerald-600" />
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
               )}
             </div>
 
-            {/* Desplegable de Resultados Rápidos de Búsqueda */}
-            {isFocused && filteredTramites.length > 0 && (
-              <div className="absolute left-0 right-0 top-full mt-2 bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden z-30">
-                <div className="p-2.5 bg-slate-50 border-b border-slate-100 text-[11px] font-bold text-slate-500 uppercase tracking-wider">
-                  Trámites y Servicios Encontrados
-                </div>
-                <div className="divide-y divide-slate-100">
-                  {filteredTramites.map((tramite) => (
-                    <Link
-                      key={tramite.id}
-                      href={tramite.enlaceAccion || "/tramites"}
-                      className="p-3.5 hover:bg-amber-50/80 transition-colors flex items-start justify-between gap-3 group text-slate-800"
-                    >
-                      <div>
-                        <h4 className="text-xs sm:text-sm font-bold group-hover:text-amber-800 flex items-center gap-2">
-                          <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                          <span>{tramite.titulo}</span>
-                        </h4>
-                        <p className="text-[11px] text-slate-500 line-clamp-1 mt-0.5">
-                          {tramite.descripcion}
-                        </p>
-                      </div>
-                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 shrink-0 font-bold self-center">
-                        {tramite.modalidad}
-                      </span>
-                    </Link>
-                  ))}
-                </div>
-                <div className="p-2.5 bg-slate-50 text-center">
-                  <Link
-                    href="/tramites"
-                    className="text-xs font-bold text-amber-700 hover:text-amber-800"
-                  >
-                    Ver catálogo completo de trámites →
-                  </Link>
-                </div>
+            {/* Contador de Métricas Clave al Estilo Caracas */}
+            <div className="grid grid-cols-3 sm:grid-cols-4 gap-3 pt-4 border-t border-white/10 max-w-lg text-slate-300">
+              <div>
+                <div className="text-xl sm:text-2xl font-black text-amber-400">180K+</div>
+                <div className="text-[10px] text-slate-400 uppercase font-semibold">Población</div>
               </div>
-            )}
+              <div>
+                <div className="text-xl sm:text-2xl font-black text-emerald-400">5</div>
+                <div className="text-[10px] text-slate-400 uppercase font-semibold">Parroquias</div>
+              </div>
+              <div>
+                <div className="text-xl sm:text-2xl font-black text-sky-400">24/7</div>
+                <div className="text-[10px] text-slate-400 uppercase font-semibold">Ribas Resuelve</div>
+              </div>
+              <div className="hidden sm:block">
+                <div className="text-xl sm:text-2xl font-black text-rose-400">4</div>
+                <div className="text-[10px] text-slate-400 uppercase font-semibold">Zonas Aseo</div>
+              </div>
+            </div>
           </div>
-        </div>
 
-        {/* 4 Accesos Rápidos Principales (Tarjetas Flotantes con Glassmorphism) */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-12">
-          {/* Tarjeta 1: Oficina Virtual */}
-          <Link
-            href="/oficina-virtual"
-            className="group relative bg-[#0a2540]/60 hover:bg-[#0a2540]/80 backdrop-blur-md border border-white/20 hover:border-amber-400 rounded-2xl p-5 transition-all duration-300 transform hover:-translate-y-1 shadow-xl flex flex-col justify-between"
-          >
-            <div>
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center text-slate-950 font-bold mb-4 shadow-lg group-hover:scale-110 transition-transform">
-                <ShieldCheck className="w-6 h-6" />
-              </div>
-              <h3 className="text-base font-bold text-white group-hover:text-amber-300 transition-colors">
-                Oficina Virtual
-              </h3>
-              <p className="text-xs text-slate-300 mt-1 leading-relaxed">
-                Hacienda municipal, pago de impuestos sobre inmuebles, vehículos y patente comercial.
-              </p>
+          {/* ============================================================== */}
+          {/* COLUMNA DERECHA: Matriz de Edificios / Dependencias Especiales */}
+          {/* ============================================================== */}
+          <div className="lg:col-span-5 space-y-3">
+            <div className="flex items-center justify-between px-1">
+              <span className="text-[11px] font-black uppercase tracking-widest text-slate-300 flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-red-500"></span>
+                DEPENDENCIAS Y SERVICIOS
+              </span>
+              <span className="text-[10px] text-amber-400/90 font-bold uppercase">
+                Portal Oficial
+              </span>
             </div>
-            <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between text-xs font-bold text-amber-400 group-hover:text-amber-300">
-              <span>Gestionar en línea</span>
-              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-            </div>
-          </Link>
 
-          {/* Tarjeta 2: Trámites & Registro Civil */}
-          <Link
-            href="/tramites"
-            className="group relative bg-[#0a2540]/60 hover:bg-[#0a2540]/80 backdrop-blur-md border border-white/20 hover:border-emerald-400 rounded-2xl p-5 transition-all duration-300 transform hover:-translate-y-1 shadow-xl flex flex-col justify-between"
-          >
-            <div>
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center text-slate-950 font-bold mb-4 shadow-lg group-hover:scale-110 transition-transform">
-                <FileText className="w-6 h-6" />
-              </div>
-              <h3 className="text-base font-bold text-white group-hover:text-emerald-300 transition-colors">
-                Trámites y Registro Civil
-              </h3>
-              <p className="text-xs text-slate-300 mt-1 leading-relaxed">
-                Partidas de nacimiento, constancias de residencia, fe de vida y fichas de catastro.
-              </p>
-            </div>
-            <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between text-xs font-bold text-emerald-400 group-hover:text-emerald-300">
-              <span>Ver requisitos y citas</span>
-              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-            </div>
-          </Link>
+            {/* Grid 2x3 con el diseño de credenciales oscuras y ribete rojo */}
+            <div className="grid grid-cols-2 gap-3">
+              {dependenciasEspeciales.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <Link
+                    key={item.id}
+                    href={item.href}
+                    className={`relative group overflow-hidden rounded-2xl bg-gradient-to-br ${item.bgGradient} p-3.5 border ${item.borderColor} shadow-xl hover:shadow-2xl transition-all duration-200 transform hover:-translate-y-1 flex flex-col justify-between min-h-[110px]`}
+                  >
+                    {/* Cinta de Marca Superior */}
+                    <div className="flex items-center justify-between gap-1 mb-2">
+                      <span className={`text-[9px] font-black uppercase px-2 py-0.5 rounded tracking-wider ${item.colorTag}`}>
+                        {item.sigla}
+                      </span>
+                      <Icon className="w-4 h-4 text-slate-300 group-hover:scale-110 transition-transform" />
+                    </div>
 
-          {/* Tarjeta 3: Ribas Resuelve */}
-          <Link
-            href="/ribas-resuelve"
-            className="group relative bg-[#0a2540]/60 hover:bg-[#0a2540]/80 backdrop-blur-md border border-white/20 hover:border-rose-400 rounded-2xl p-5 transition-all duration-300 transform hover:-translate-y-1 shadow-xl flex flex-col justify-between"
-          >
-            <div>
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-rose-500 to-rose-700 flex items-center justify-center text-white font-bold mb-4 shadow-lg group-hover:scale-110 transition-transform">
-                <AlertCircle className="w-6 h-6" />
-              </div>
-              <h3 className="text-base font-bold text-white group-hover:text-rose-300 transition-colors">
-                Ribas Resuelve
-              </h3>
-              <p className="text-xs text-slate-300 mt-1 leading-relaxed">
-                Atención 1x10 y reportes comunitarios de alumbrado, botes de agua, vialidad y poda.
-              </p>
-            </div>
-            <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between text-xs font-bold text-rose-400 group-hover:text-rose-300">
-              <span>Hacer reporte con foto</span>
-              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-            </div>
-          </Link>
+                    {/* Contenido Principal de la Tarjeta */}
+                    <div>
+                      <h3 className="text-xs sm:text-sm font-black text-white group-hover:text-amber-300 transition-colors leading-tight">
+                        {item.nombre}
+                      </h3>
+                      <p className="text-[10px] text-slate-300 line-clamp-1 mt-0.5">
+                        {item.detalle}
+                      </p>
+                    </div>
 
-          {/* Tarjeta 4: Rutas de Aseo Urbano */}
-          <Link
-            href="/aseo"
-            className="group relative bg-[#0a2540]/60 hover:bg-[#0a2540]/80 backdrop-blur-md border border-white/20 hover:border-sky-400 rounded-2xl p-5 transition-all duration-300 transform hover:-translate-y-1 shadow-xl flex flex-col justify-between"
-          >
-            <div>
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-sky-400 to-sky-600 flex items-center justify-center text-slate-950 font-bold mb-4 shadow-lg group-hover:scale-110 transition-transform">
-                <Truck className="w-6 h-6" />
-              </div>
-              <h3 className="text-base font-bold text-white group-hover:text-sky-300 transition-colors">
-                Rutas de Aseo Urbano
-              </h3>
-              <p className="text-xs text-slate-300 mt-1 leading-relaxed">
-                Cronograma por comunidad: descubre qué día pasa el camión o la trimoto en tu calle.
-              </p>
+                    {/* Pie de tarjeta con indicador */}
+                    <div className="mt-2 pt-1.5 border-t border-white/10 flex items-center justify-between text-[9px] font-bold text-slate-400 group-hover:text-amber-400">
+                      <span>{item.badge}</span>
+                      <ChevronRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
+                    </div>
+                  </Link>
+                );
+              })}
             </div>
-            <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between text-xs font-bold text-sky-400 group-hover:text-sky-300">
-              <span>Consultar mi sector</span>
-              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-            </div>
-          </Link>
+          </div>
         </div>
       </div>
     </section>

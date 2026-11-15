@@ -14,6 +14,7 @@ import {
   Users
 } from "lucide-react";
 import { ZONAS_ASEO } from "@/data/aseo";
+import { MapaRelieveAseo } from "@/components/MapaRelieveAseo";
 
 export default function AseoPage() {
   const [selectedZona, setSelectedZona] = useState<string>("todas");
@@ -53,6 +54,9 @@ export default function AseoPage() {
             </p>
           </div>
         </div>
+
+        {/* Simulador Interactivo: Mapa con Relieve y Cuadrillas según Horario */}
+        <MapaRelieveAseo />
 
         {/* Buscador y Filtros */}
         <div className="bg-white p-4 sm:p-6 rounded-2xl border border-slate-200 shadow-sm mb-8 space-y-4">

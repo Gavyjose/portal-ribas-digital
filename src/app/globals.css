@@ -57,3 +57,24 @@ body {
 .text-shadow-hero {
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
 }
+
+/* Animación de Marquesina / Ticker de Alertas estilo Alcaldía de Caracas */
+@keyframes ticker {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-ticker {
+  display: inline-flex;
+  white-space: nowrap;
+  animation: ticker 40s linear infinite;
+}
+
+.animate-ticker:hover {
+  animation-play-state: paused;
+}
+

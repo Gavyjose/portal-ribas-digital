@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   Menu,
   X,
+  ChevronDown,
   Building2,
   FileText,
   AlertCircle,
@@ -13,149 +14,288 @@ import {
   BookOpen,
   Landmark,
   ShieldCheck,
-  ChevronRight,
   User,
-  LogOut
+  LogOut,
+  ChevronRight,
+  Sparkles,
+  MapPin,
+  Compass
 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [dropdownAlcaldia, setDropdownAlcaldia] = useState(false);
+  const [dropdownMunicipio, setDropdownMunicipio] = useState(false);
   const pathname = usePathname();
   const { usuario, logout } = useAuth();
 
-  const navLinks = [
-    { name: "Inicio", href: "/" },
-    { name: "Trámites", href: "/tramites", icon: FileText },
-    {
-      name: usuario ? "Mi Expediente" : "Oficina Virtual",
-      href: usuario ? "/oficina-virtual/dashboard" : "/oficina-virtual",
-      icon: ShieldCheck,
-      highlight: true
-    },
-    { name: "Ribas Resuelve", href: "/ribas-resuelve", icon: AlertCircle },
-    { name: "Aseo Urbano", href: "/aseo", icon: Truck },
-    { name: "Gacetas", href: "/gacetas", icon: BookOpen },
-    { name: "El Municipio", href: "/municipio", icon: Landmark },
-  ];
+  const closeDropdowns = () => {
+    setDropdownAlcaldia(false);
+    setDropdownMunicipio(false);
+  };
 
   return (
-    <header className="sticky top-0 z-50 bg-[#0a2540] text-white shadow-lg border-b border-amber-500/20">
+    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md text-slate-800 shadow-sm border-b border-slate-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
-          {/* Logo e Identidad Institucional */}
-          <Link href="/" className="flex items-center gap-3.5 group">
-            {/* Emblema Gráfico Simbólico de Ribas */}
-            <div className="relative w-12 h-12 rounded-xl bg-gradient-to-br from-amber-400 via-amber-500 to-amber-600 p-0.5 shadow-md flex items-center justify-center transition-transform group-hover:scale-105">
-              <div className="w-full h-full bg-[#0a2540] rounded-[10px] flex items-center justify-center p-1.5">
+          {/* Logo Institucional estilo Alcaldía de Caracas */}
+          <Link
+            href="/"
+            onClick={closeDropdowns}
+            className="flex items-center gap-3.5 group select-none"
+          >
+            {/* Emblema con Estrella y Colores Patrios de Ribas */}
+            <div className="relative w-12 h-12 rounded-xl bg-gradient-to-br from-[#0a2540] to-[#123961] p-0.5 shadow flex items-center justify-center transition-transform group-hover:scale-105">
+              <div className="w-full h-full bg-[#0a2540] rounded-[10px] flex items-center justify-center">
                 <Building2 className="w-6 h-6 text-amber-400" />
               </div>
-              <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-red-600 rounded-full border border-white flex items-center justify-center text-[8px] font-bold text-white">
+              <div className="absolute -top-1 -right-1 w-4 h-4 bg-red-600 rounded-full border-2 border-white flex items-center justify-center text-[8px] font-black text-white shadow">
                 ★
               </div>
             </div>
 
             <div className="flex flex-col">
-              <div className="flex items-center gap-2">
-                <span className="text-xs uppercase tracking-wider font-semibold text-amber-400">
-                  República Bolivariana de Venezuela
+              <div className="flex items-center gap-1.5">
+                <span className="text-xl sm:text-2xl font-black tracking-tight text-[#0a2540] uppercase">
+                  RIBAS
+                </span>
+                <span className="text-[10px] font-bold text-red-600 bg-red-50 border border-red-200 px-1.5 py-0.2 rounded uppercase">
+                  Alcaldía
                 </span>
               </div>
-              <span className="text-base sm:text-lg font-bold tracking-tight text-white leading-tight">
-                Alcaldía de José Félix Ribas
+              <span className="text-[11px] font-bold text-slate-600 tracking-tight leading-none">
+                Municipio José Félix Ribas
               </span>
-              <span className="text-[11px] text-slate-300 font-medium flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-                La Victoria • Estado Aragua • Cuna de la Juventud
+              <span className="text-[10px] text-slate-400 font-medium flex items-center gap-1 mt-0.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                La Victoria • Estado Aragua
               </span>
             </div>
           </Link>
 
           {/* Menú de Navegación de Escritorio */}
-          <nav className="hidden lg:flex items-center gap-1.5">
-            {navLinks.map((link) => {
-              const isActive = pathname === link.href;
-              const Icon = link.icon;
+          <nav className="hidden lg:flex items-center gap-1">
+            {/* Inicio */}
+            <Link
+              href="/"
+              onClick={closeDropdowns}
+              className={`px-3 py-2 rounded-lg text-xs font-bold transition-colors ${
+                pathname === "/"
+                  ? "text-blue-700 bg-blue-50/80"
+                  : "text-slate-700 hover:text-[#0a2540] hover:bg-slate-100"
+              }`}
+            >
+              Inicio
+            </Link>
 
-              if (link.highlight) {
-                return (
+            {/* Dropdown Alcaldía */}
+            <div
+              className="relative"
+              onMouseEnter={() => setDropdownAlcaldia(true)}
+              onMouseLeave={() => setDropdownAlcaldia(false)}
+            >
+              <button
+                className={`px-3 py-2 rounded-lg text-xs font-bold flex items-center gap-1 transition-colors ${
+                  pathname.startsWith("/admin") || dropdownAlcaldia
+                    ? "text-blue-700 bg-blue-50/80"
+                    : "text-slate-700 hover:text-[#0a2540] hover:bg-slate-100"
+                }`}
+              >
+                <span>Alcaldía</span>
+                <ChevronDown className="w-3.5 h-3.5" />
+              </button>
+
+              {dropdownAlcaldia && (
+                <div className="absolute top-full left-0 w-64 bg-white rounded-2xl shadow-xl border border-slate-200 py-2 mt-0 animate-in fade-in slide-in-from-top-1 duration-150 z-50">
+                  <div className="px-3 py-1.5 text-[10px] font-extrabold uppercase text-slate-400 border-b border-slate-100">
+                    Estructura y Despacho
+                  </div>
                   <Link
-                    key={link.name}
-                    href={link.href}
-                    className={`ml-2 px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-2 transition-all shadow-md ${
-                      isActive
-                        ? "bg-amber-400 text-[#0a2540] ring-2 ring-white/50"
-                        : "bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 hover:shadow-amber-500/25"
-                    }`}
+                    href="/admin"
+                    onClick={closeDropdowns}
+                    className="flex items-center gap-2.5 px-3.5 py-2 text-xs font-medium text-slate-700 hover:bg-amber-50 hover:text-amber-900 transition-colors"
                   >
-                    {Icon && <Icon className="w-3.5 h-3.5" />}
-                    <span>{link.name}</span>
+                    <Building2 className="w-4 h-4 text-amber-600 shrink-0" />
+                    <div>
+                      <div className="font-bold">Sala Situacional 1x10</div>
+                      <div className="text-[10px] text-slate-400">Panel administrativo municipal</div>
+                    </div>
                   </Link>
-                );
-              }
+                  <Link
+                    href="/oficina-virtual"
+                    onClick={closeDropdowns}
+                    className="flex items-center gap-2.5 px-3.5 py-2 text-xs font-medium text-slate-700 hover:bg-blue-50 hover:text-blue-900 transition-colors"
+                  >
+                    <ShieldCheck className="w-4 h-4 text-blue-600 shrink-0" />
+                    <div>
+                      <div className="font-bold">Hacienda y Tributos</div>
+                      <div className="text-[10px] text-slate-400">Patentes, vehículos y solvencias</div>
+                    </div>
+                  </Link>
+                  <Link
+                    href="/aseo"
+                    onClick={closeDropdowns}
+                    className="flex items-center gap-2.5 px-3.5 py-2 text-xs font-medium text-slate-700 hover:bg-emerald-50 hover:text-emerald-900 transition-colors"
+                  >
+                    <Truck className="w-4 h-4 text-emerald-600 shrink-0" />
+                    <div>
+                      <div className="font-bold">Servicios Públicos</div>
+                      <div className="text-[10px] text-slate-400">Plan Ribas Limpia y Bonita</div>
+                    </div>
+                  </Link>
+                </div>
+              )}
+            </div>
 
-              return (
-                <Link
-                  key={link.name}
-                  href={link.href}
-                  className={`px-3 py-2 rounded-lg text-xs font-medium transition-colors flex items-center gap-1.5 ${
-                    isActive
-                      ? "bg-white/10 text-amber-400 font-semibold"
-                      : "text-slate-200 hover:text-white hover:bg-white/5"
-                  }`}
-                >
-                  {Icon && <Icon className="w-3.5 h-3.5 text-slate-400" />}
-                  <span>{link.name}</span>
-                </Link>
-              );
-            })}
+            {/* Dropdown Municipio */}
+            <div
+              className="relative"
+              onMouseEnter={() => setDropdownMunicipio(true)}
+              onMouseLeave={() => setDropdownMunicipio(false)}
+            >
+              <button
+                className={`px-3 py-2 rounded-lg text-xs font-bold flex items-center gap-1 transition-colors ${
+                  pathname === "/municipio" || dropdownMunicipio
+                    ? "text-blue-700 bg-blue-50/80"
+                    : "text-slate-700 hover:text-[#0a2540] hover:bg-slate-100"
+                }`}
+              >
+                <span>Municipio</span>
+                <ChevronDown className="w-3.5 h-3.5" />
+              </button>
 
-            {/* Usuario Único: Estado de Autenticación */}
-            <div className="ml-2 pl-2 border-l border-white/10 flex items-center gap-2">
+              {dropdownMunicipio && (
+                <div className="absolute top-full left-0 w-64 bg-white rounded-2xl shadow-xl border border-slate-200 py-2 mt-0 animate-in fade-in slide-in-from-top-1 duration-150 z-50">
+                  <div className="px-3 py-1.5 text-[10px] font-extrabold uppercase text-slate-400 border-b border-slate-100">
+                    Territorio e Historia
+                  </div>
+                  <Link
+                    href="/municipio"
+                    onClick={closeDropdowns}
+                    className="flex items-center gap-2.5 px-3.5 py-2 text-xs font-medium text-slate-700 hover:bg-amber-50 hover:text-amber-900 transition-colors"
+                  >
+                    <Landmark className="w-4 h-4 text-amber-600 shrink-0" />
+                    <div>
+                      <div className="font-bold">Historia y Símbolos</div>
+                      <div className="text-[10px] text-slate-400">Batalla del 12 de Febrero de 1814</div>
+                    </div>
+                  </Link>
+                  <Link
+                    href="/municipio#parroquias"
+                    onClick={closeDropdowns}
+                    className="flex items-center gap-2.5 px-3.5 py-2 text-xs font-medium text-slate-700 hover:bg-blue-50 hover:text-blue-900 transition-colors"
+                  >
+                    <Compass className="w-4 h-4 text-blue-600 shrink-0" />
+                    <div>
+                      <div className="font-bold">Las 5 Parroquias</div>
+                      <div className="text-[10px] text-slate-400">Castor Nieves, Zuata, Bolívar, Pao y Guacamayas</div>
+                    </div>
+                  </Link>
+                </div>
+              )}
+            </div>
+
+            {/* Trámites */}
+            <Link
+              href="/tramites"
+              onClick={closeDropdowns}
+              className={`px-3 py-2 rounded-lg text-xs font-bold transition-colors ${
+                pathname === "/tramites"
+                  ? "text-blue-700 bg-blue-50/80"
+                  : "text-slate-700 hover:text-[#0a2540] hover:bg-slate-100"
+              }`}
+            >
+              Trámites
+            </Link>
+
+            {/* Ribas Resuelve */}
+            <Link
+              href="/ribas-resuelve"
+              onClick={closeDropdowns}
+              className={`px-3 py-2 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-colors ${
+                pathname === "/ribas-resuelve"
+                  ? "text-rose-700 bg-rose-50"
+                  : "text-slate-700 hover:text-rose-700 hover:bg-rose-50/60"
+              }`}
+            >
+              <AlertCircle className="w-3.5 h-3.5 text-rose-600" />
+              <span>Ribas Resuelve</span>
+            </Link>
+
+            {/* Aseo Urbano */}
+            <Link
+              href="/aseo"
+              onClick={closeDropdowns}
+              className={`px-3 py-2 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-colors ${
+                pathname === "/aseo"
+                  ? "text-emerald-700 bg-emerald-50"
+                  : "text-slate-700 hover:text-emerald-700 hover:bg-emerald-50/60"
+              }`}
+            >
+              <Truck className="w-3.5 h-3.5 text-emerald-600" />
+              <span>Aseo Urbano</span>
+            </Link>
+
+            {/* Gacetas */}
+            <Link
+              href="/gacetas"
+              onClick={closeDropdowns}
+              className={`px-3 py-2 rounded-lg text-xs font-bold transition-colors ${
+                pathname === "/gacetas"
+                  ? "text-blue-700 bg-blue-50/80"
+                  : "text-slate-700 hover:text-[#0a2540] hover:bg-slate-100"
+              }`}
+            >
+              Gacetas
+            </Link>
+
+            {/* Botón Principal Oficina Virtual / Usuario Único */}
+            <div className="ml-3 pl-3 border-l border-slate-200 flex items-center gap-2">
               {usuario ? (
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1.5">
                   <Link
                     href="/oficina-virtual/dashboard"
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 hover:bg-emerald-500/30 transition-colors text-xs font-bold"
+                    className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-sm transition-all"
                   >
-                    <User className="w-3.5 h-3.5 text-emerald-400" />
-                    <span className="max-w-[110px] truncate">{usuario.nombre.split(" ")[0]}</span>
+                    <User className="w-3.5 h-3.5" />
+                    <span className="max-w-[120px] truncate">{usuario.nombre.split(" ")[0]}</span>
                   </Link>
                   <button
                     onClick={logout}
                     title="Cerrar sesión"
-                    className="p-1.5 text-slate-400 hover:text-rose-400 hover:bg-white/5 rounded-lg transition-colors"
+                    className="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-colors"
                   >
                     <LogOut className="w-3.5 h-3.5" />
                   </button>
                 </div>
               ) : (
                 <Link
-                  href="/login"
-                  className="px-3 py-1.5 rounded-lg border border-amber-400/40 text-amber-300 hover:bg-amber-400/10 text-xs font-bold transition-colors flex items-center gap-1.5"
+                  href="/oficina-virtual"
+                  className="px-4 py-2 rounded-xl bg-[#0a2540] hover:bg-slate-900 text-amber-400 font-bold text-xs shadow-sm hover:shadow transition-all flex items-center gap-2"
                 >
-                  <User className="w-3.5 h-3.5" />
-                  <span>Ingresar</span>
+                  <ShieldCheck className="w-4 h-4 text-amber-400" />
+                  <span>Oficina Virtual</span>
                 </Link>
               )}
             </div>
           </nav>
 
-          {/* Botón de Menú Móvil */}
+          {/* Menú Móvil Botón */}
           <div className="flex lg:hidden items-center gap-2">
             <Link
-              href={usuario ? "/oficina-virtual/dashboard" : "/login"}
-              className="px-3 py-1.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs rounded-md shadow flex items-center gap-1"
+              href={usuario ? "/oficina-virtual/dashboard" : "/oficina-virtual"}
+              className="px-3 py-1.5 bg-[#0a2540] text-amber-400 font-bold text-xs rounded-xl shadow flex items-center gap-1.5"
             >
-              <User className="w-3.5 h-3.5" />
-              <span>{usuario ? usuario.nombre.split(" ")[0] : "Ingresar"}</span>
+              <ShieldCheck className="w-3.5 h-3.5" />
+              <span>{usuario ? usuario.nombre.split(" ")[0] : "Oficina"}</span>
             </Link>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 rounded-lg bg-white/5 hover:bg-white/10 text-white focus:outline-none"
-              aria-label="Abrir menú"
+              className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 focus:outline-none"
+              aria-label="Menú principal"
             >
-              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
         </div>
@@ -163,51 +303,102 @@ export function Navbar() {
 
       {/* Menú Móvil Desplegable */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-[#06182a] border-t border-slate-800 px-4 pt-3 pb-6 space-y-2">
-          {navLinks.map((link) => {
-            const isActive = pathname === link.href;
-            const Icon = link.icon;
+        <div className="lg:hidden bg-white border-t border-slate-200 px-4 pt-3 pb-6 space-y-2 shadow-xl animate-in fade-in duration-200">
+          <Link
+            href="/"
+            onClick={() => setMobileMenuOpen(false)}
+            className="flex items-center justify-between p-2.5 rounded-xl font-bold text-xs text-slate-800 hover:bg-slate-100"
+          >
+            <span>Inicio</span>
+            <ChevronRight className="w-4 h-4 text-slate-400" />
+          </Link>
+          <Link
+            href="/tramites"
+            onClick={() => setMobileMenuOpen(false)}
+            className="flex items-center justify-between p-2.5 rounded-xl font-bold text-xs text-slate-800 hover:bg-slate-100"
+          >
+            <span>Trámites y Servicios</span>
+            <ChevronRight className="w-4 h-4 text-slate-400" />
+          </Link>
+          <Link
+            href="/oficina-virtual"
+            onClick={() => setMobileMenuOpen(false)}
+            className="flex items-center justify-between p-2.5 rounded-xl font-bold text-xs text-amber-900 bg-amber-50"
+          >
+            <div className="flex items-center gap-2">
+              <ShieldCheck className="w-4 h-4 text-amber-600" />
+              <span>Oficina Virtual (Solvencias)</span>
+            </div>
+            <ChevronRight className="w-4 h-4 text-amber-600" />
+          </Link>
+          <Link
+            href="/ribas-resuelve"
+            onClick={() => setMobileMenuOpen(false)}
+            className="flex items-center justify-between p-2.5 rounded-xl font-bold text-xs text-rose-800 hover:bg-rose-50"
+          >
+            <div className="flex items-center gap-2">
+              <AlertCircle className="w-4 h-4 text-rose-600" />
+              <span>Ribas Resuelve (1x10)</span>
+            </div>
+            <ChevronRight className="w-4 h-4 text-slate-400" />
+          </Link>
+          <Link
+            href="/aseo"
+            onClick={() => setMobileMenuOpen(false)}
+            className="flex items-center justify-between p-2.5 rounded-xl font-bold text-xs text-emerald-800 hover:bg-emerald-50"
+          >
+            <div className="flex items-center gap-2">
+              <Truck className="w-4 h-4 text-emerald-600" />
+              <span>Aseo Urbano (Zonas A, B, C, D)</span>
+            </div>
+            <ChevronRight className="w-4 h-4 text-slate-400" />
+          </Link>
+          <Link
+            href="/municipio"
+            onClick={() => setMobileMenuOpen(false)}
+            className="flex items-center justify-between p-2.5 rounded-xl font-bold text-xs text-slate-800 hover:bg-slate-100"
+          >
+            <span>El Municipio y las 5 Parroquias</span>
+            <ChevronRight className="w-4 h-4 text-slate-400" />
+          </Link>
+          <Link
+            href="/gacetas"
+            onClick={() => setMobileMenuOpen(false)}
+            className="flex items-center justify-between p-2.5 rounded-xl font-bold text-xs text-slate-800 hover:bg-slate-100"
+          >
+            <span>Gacetas Oficiales</span>
+            <ChevronRight className="w-4 h-4 text-slate-400" />
+          </Link>
 
-            return (
-              <Link
-                key={link.name}
-                href={link.href}
-                onClick={() => setMobileMenuOpen(false)}
-                className={`flex items-center justify-between px-3.5 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-                  isActive
-                    ? "bg-amber-500/20 text-amber-400 border border-amber-500/30"
-                    : "text-slate-200 hover:bg-white/5 hover:text-white"
-                }`}
-              >
-                <div className="flex items-center gap-3">
-                  {Icon && <Icon className="w-4 h-4 text-amber-400" />}
-                  <span>{link.name}</span>
-                </div>
-                <ChevronRight className="w-4 h-4 text-slate-500" />
-              </Link>
-            );
-          })}
-
-          <div className="pt-3 border-t border-slate-800">
+          <div className="pt-3 border-t border-slate-200 mt-2">
             {usuario ? (
-              <button
-                onClick={() => {
-                  logout();
-                  setMobileMenuOpen(false);
-                }}
-                className="w-full py-2.5 px-3 text-left text-rose-400 hover:bg-rose-500/10 rounded-lg text-xs font-bold flex items-center gap-2"
-              >
-                <LogOut className="w-4 h-4" />
-                <span>Cerrar Sesión ({usuario.nombre})</span>
-              </button>
+              <div className="space-y-2">
+                <Link
+                  href="/oficina-virtual/dashboard"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="w-full py-2.5 px-3 bg-emerald-600 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-2 shadow"
+                >
+                  <User className="w-4 h-4" />
+                  <span>Mi Expediente ({usuario.nombre})</span>
+                </Link>
+                <button
+                  onClick={() => {
+                    logout();
+                    setMobileMenuOpen(false);
+                  }}
+                  className="w-full py-2 px-3 text-center text-rose-600 hover:bg-rose-50 rounded-xl text-xs font-bold"
+                >
+                  Cerrar Sesión
+                </button>
+              </div>
             ) : (
               <Link
                 href="/login"
                 onClick={() => setMobileMenuOpen(false)}
-                className="w-full py-2.5 px-3 bg-amber-500 text-slate-950 font-bold rounded-lg text-xs flex items-center justify-center gap-2"
+                className="w-full py-2.5 px-3 bg-[#0a2540] text-amber-400 font-bold rounded-xl text-xs flex items-center justify-center gap-2 shadow"
               >
                 <User className="w-4 h-4" />
-                <span>Iniciar Sesión / Registro de Usuario Único</span>
+                <span>Ingresar con Cédula o RIF</span>
               </Link>
             )}
           </div>
