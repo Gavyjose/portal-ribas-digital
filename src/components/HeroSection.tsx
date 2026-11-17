@@ -158,14 +158,14 @@ export function HeroSection() {
 
             {/* Gran Titular Hero con Tipografía Óptica Apple */}
             <h1 className="text-3xl sm:text-5xl lg:text-5xl font-black text-white apple-title-display drop-shadow-md">
-              Transparencia, acción y comunidad al alcance de todos
+              Compromiso que transforma, gestión que resuelve
             </h1>
 
             {/* Subtítulo */}
             <p className="text-sm sm:text-base text-slate-200 max-w-xl apple-subheading drop-shadow">
-              Portal oficial de la Alcaldía del Municipio Ribas. Realiza tus
-              trámites tributarios, consulta el cronograma de aseo urbano y
-              reporta incidencias comunitarias en un solo lugar.
+              Portal oficial de la Alcaldía de José Félix Ribas. Trámites en
+              línea, atención directa 1x10 y servicios públicos al alcance de un
+              clic.
             </p>
 
             {/* Botones de Acción Estilo Caracas con Apple Press */}
