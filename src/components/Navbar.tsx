@@ -19,7 +19,8 @@ import {
   ChevronRight,
   Sparkles,
   MapPin,
-  Compass
+  Compass,
+  HardHat
 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 
@@ -144,6 +145,17 @@ export function Navbar() {
                       <div className="text-[10px] text-slate-400">Plan Ribas Limpia y Bonita</div>
                     </div>
                   </Link>
+                  <Link
+                    href="/obras"
+                    onClick={closeDropdowns}
+                    className="flex items-center gap-2.5 px-3.5 py-2 text-xs font-medium text-slate-700 hover:bg-indigo-50 hover:text-indigo-900 transition-colors"
+                  >
+                    <HardHat className="w-4 h-4 text-amber-500 shrink-0" />
+                    <div>
+                      <div className="font-bold">Obras Públicas</div>
+                      <div className="text-[10px] text-slate-400">Monitor en las 5 parroquias</div>
+                    </div>
+                  </Link>
                 </div>
               )}
             </div>
@@ -235,6 +247,20 @@ export function Navbar() {
             >
               <Truck className="w-3.5 h-3.5 text-emerald-600" />
               <span>Aseo Urbano</span>
+            </Link>
+
+            {/* Obras Públicas */}
+            <Link
+              href="/obras"
+              onClick={closeDropdowns}
+              className={`px-3 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all duration-120 apple-press ${
+                pathname === "/obras"
+                  ? "text-blue-700 bg-blue-50/80 shadow-xs"
+                  : "text-slate-700 hover:text-[#0a2540] hover:bg-slate-100/80"
+              }`}
+            >
+              <HardHat className="w-3.5 h-3.5 text-amber-500" />
+              <span>Obras</span>
             </Link>
 
             {/* Gacetas */}
@@ -350,6 +376,17 @@ export function Navbar() {
             <div className="flex items-center gap-2">
               <Truck className="w-4 h-4 text-emerald-600" />
               <span>Aseo Urbano (Zonas A, B, C, D)</span>
+            </div>
+            <ChevronRight className="w-4 h-4 text-slate-400" />
+          </Link>
+          <Link
+            href="/obras"
+            onClick={() => setMobileMenuOpen(false)}
+            className="flex items-center justify-between p-2.5 rounded-xl font-bold text-xs text-blue-900 hover:bg-blue-50"
+          >
+            <div className="flex items-center gap-2">
+              <HardHat className="w-4 h-4 text-amber-500" />
+              <span>Obras en las 5 Parroquias</span>
             </div>
             <ChevronRight className="w-4 h-4 text-slate-400" />
           </Link>

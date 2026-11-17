@@ -23,6 +23,7 @@ import {
 } from "lucide-react";
 import { TRAMITES_MUNICIPALES } from "@/data/tramites";
 import { ZONAS_ASEO } from "@/data/aseo";
+import { OBRAS_PUBLICAS } from "@/data/obrasPublicas";
 
 export function HeroSection() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -48,6 +49,16 @@ export function HeroSection() {
             z.rutas.some((r) =>
               r.sectores.toLowerCase().includes(searchTerm.toLowerCase())
             )
+        ).slice(0, 2);
+
+  const filteredObras =
+    searchTerm.trim() === ""
+      ? []
+      : OBRAS_PUBLICAS.filter(
+          (o) =>
+            o.titulo.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            o.ubicacion.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            o.parroquiaNombre.toLowerCase().includes(searchTerm.toLowerCase())
         ).slice(0, 2);
 
   // Servicios / Edificios Especiales estilo Alcaldía de Caracas
@@ -217,7 +228,7 @@ export function HeroSection() {
               </div>
 
               {/* Menú de Resultados Desplegable */}
-              {isFocused && (filteredTramites.length > 0 || filteredZonas.length > 0) && (
+              {isFocused && (filteredTramites.length > 0 || filteredZonas.length > 0 || filteredObras.length > 0) && (
                 <div className="absolute left-0 right-0 top-full mt-2 bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden z-30 text-slate-800">
                   {filteredTramites.length > 0 && (
                     <div>
@@ -258,6 +269,27 @@ export function HeroSection() {
                             <p className="text-[10px] text-slate-500">Coordinador: {z.coordinador}</p>
                           </div>
                           <ChevronRight className="w-4 h-4 text-emerald-600" />
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+
+                  {filteredObras.length > 0 && (
+                    <div>
+                      <div className="p-2 bg-slate-50 text-[10px] font-bold text-slate-500 uppercase tracking-wider border-b">
+                        Obras Públicas en las 5 Parroquias
+                      </div>
+                      {filteredObras.map((o) => (
+                        <Link
+                          key={o.id}
+                          href="/obras"
+                          className="p-3 hover:bg-blue-50 flex items-center justify-between gap-2 border-b border-slate-100 last:border-none"
+                        >
+                          <div>
+                            <p className="text-xs font-bold text-blue-900">{o.titulo}</p>
+                            <p className="text-[10px] text-slate-500">{o.parroquiaNombre} • Avance {o.porcentajeAvance}%</p>
+                          </div>
+                          <ChevronRight className="w-4 h-4 text-blue-600" />
                         </Link>
                       ))}
                     </div>

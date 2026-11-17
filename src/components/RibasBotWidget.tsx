@@ -55,8 +55,9 @@ export function RibasBotWidget() {
       sugerencias: [
         "🚛 ¿Cuándo pasa el aseo?",
         "📑 ¿Cómo tramito una Solvencia?",
+        "🏗️ Monitor de Obras en Parroquias",
+        "🏪 Abrir o formalizar un Negocio",
         "🚨 Reportar avería con foto (1x10)",
-        "📞 Teléfonos de Emergencia",
         "💬 Hablar por WhatsApp"
       ]
     }
@@ -221,7 +222,54 @@ export function RibasBotWidget() {
       ];
     }
 
-    // 5. WhatsApp
+    // 5. Monitor de Obras Públicas y Proyectos
+    else if (
+      q.includes("obra") ||
+      q.includes("asfalto") ||
+      q.includes("asfaltado") ||
+      q.includes("pozo") ||
+      q.includes("alumbrado") ||
+      q.includes("proyecto") ||
+      q.includes("calle") ||
+      q.includes("bacheo")
+    ) {
+      respuestaBot.texto =
+        "🏗️ **Monitor de Obras Públicas (Ribas Transparente):**\n\nContamos con un visor interactivo donde puedes auditar en tiempo real las obras en ejecución y culminadas en las 5 parroquias:\n\n• **Plan Asfalto:** Av. Francisco de Miranda y Casco Central (85%)\n• **Agua Potable:** Reactivación Pozo Las Mercedes Sector 3 (100%)\n• **Colectores:** Sustitución en Zuata Centro (90%)\n• **Alumbrado LED:** 650 lámparas en Pao de Zárate (100%)\n• **Deporte:** Cancha Las Guacamayas (75%)\n\n¡Puedes ver fotos de Antes / Después y dejar tu reporte como vecino veedor!";
+      respuestaBot.enlaceAccion = {
+        texto: "Abrir Monitor de Obras y Fotos",
+        url: "/obras"
+      };
+      respuestaBot.sugerencias = [
+        "Ver fotos de antes y después",
+        "Reportar un bache o hueco",
+        "¿Quién financia las obras?"
+      ];
+    }
+
+    // 6. Momentos de Vida / Abrir Negocio
+    else if (
+      q.includes("negocio") ||
+      q.includes("empresa") ||
+      q.includes("comercio") ||
+      q.includes("patente") ||
+      q.includes("abrir") ||
+      q.includes("momento") ||
+      q.includes("vida")
+    ) {
+      respuestaBot.texto =
+        "🏪 **Ruta 1-Clic para Emprendedores y Negocios en Ribas:**\n\nHemos unificado los trámites por **Momentos de Vida** (estilo Singapur LifeSG). En una sola ruta gestionas:\n\n1. Uso de Suelo y Zonificación (Ingeniería)\n2. Conformidad de Seguridad (Bomberos)\n3. Inscripción de Aseo y Patente Comercial (SUMAR)\n\n⏱️ Tiempo total estimado: 4 a 6 días hábiles.";
+      respuestaBot.enlaceAccion = {
+        texto: "Ver Guía Paso a Paso con Checklist",
+        url: "/tramites"
+      };
+      respuestaBot.sugerencias = [
+        "¿Qué documentos exigen los bomberos?",
+        "Tramitar Solvencia Inmueble",
+        "Hablar con un asesor por WhatsApp"
+      ];
+    }
+
+    // 7. WhatsApp
     else if (q.includes("whatsapp") || q.includes("humano") || q.includes("asesor") || q.includes("persona")) {
       const msjEncoded = encodeURIComponent(
         "Hola, me comunico desde el Portal Ribas Digital. Quisiera solicitar atención ciudadana sobre: "

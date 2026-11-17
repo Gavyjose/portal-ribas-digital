@@ -143,6 +143,11 @@ export function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/obras" className="hover:text-amber-400 transition-colors">
+                  Monitor de Obras Públicas
+                </Link>
+              </li>
+              <li>
                 <Link href="/admin" className="text-amber-400/90 hover:text-amber-300 font-semibold transition-colors flex items-center gap-1">
                   <span>Acceso Funcionarios (Sala Situacional)</span>
                   <ChevronRight className="w-3 h-3" />
@@ -217,6 +222,12 @@ export function Footer() {
                 <Link href="/aseo" className="hover:text-emerald-400 transition-colors flex items-center gap-1.5 text-emerald-400 font-bold">
                   <Truck className="w-3.5 h-3.5" />
                   <span>Rutas de Aseo Urbano (Zonas A, B, C, D)</span>
+                </Link>
+              </li>
+              <li>
+                <Link href="/obras" className="hover:text-amber-400 transition-colors flex items-center gap-1.5 text-amber-300 font-bold">
+                  <Building2 className="w-3.5 h-3.5" />
+                  <span>Obras en las 5 Parroquias</span>
                 </Link>
               </li>
               <li>
