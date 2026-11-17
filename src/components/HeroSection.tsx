@@ -156,23 +156,23 @@ export function HeroSection() {
               <span>Alcaldía de José Félix Ribas</span>
             </div>
 
-            {/* Gran Titular Hero */}
-            <h1 className="text-3xl sm:text-5xl lg:text-5xl font-black text-white tracking-tight leading-[1.15] drop-shadow-md">
+            {/* Gran Titular Hero con Tipografía Óptica Apple */}
+            <h1 className="text-3xl sm:text-5xl lg:text-5xl font-black text-white apple-title-display drop-shadow-md">
               Transparencia, acción y comunidad al alcance de todos
             </h1>
 
             {/* Subtítulo */}
-            <p className="text-sm sm:text-base text-slate-200 max-w-xl leading-relaxed drop-shadow">
+            <p className="text-sm sm:text-base text-slate-200 max-w-xl apple-subheading drop-shadow">
               Portal oficial de la Alcaldía del Municipio Ribas. Realiza tus
               trámites tributarios, consulta el cronograma de aseo urbano y
               reporta incidencias comunitarias en un solo lugar.
             </p>
 
-            {/* Botones de Acción Estilo Caracas */}
+            {/* Botones de Acción Estilo Caracas con Apple Press */}
             <div className="flex flex-wrap items-center gap-3 pt-1">
               <Link
                 href="/aseo"
-                className="px-5 py-3 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs uppercase tracking-wider shadow-lg hover:shadow-emerald-500/30 flex items-center gap-2 transition-all group"
+                className="px-5 py-3 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs uppercase tracking-wider shadow-lg hover:shadow-emerald-500/30 flex items-center gap-2 transition-all apple-press group"
               >
                 <div className="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center">
                   <Play className="w-3 h-3 fill-current text-white ml-0.5" />
@@ -182,7 +182,7 @@ export function HeroSection() {
 
               <Link
                 href="#noticias"
-                className="px-5 py-3 rounded-full bg-white/10 hover:bg-white/20 text-white font-bold text-xs uppercase tracking-wider border border-white/20 backdrop-blur-md transition-all flex items-center gap-2"
+                className="px-5 py-3 rounded-full bg-white/10 hover:bg-white/20 text-white font-bold text-xs uppercase tracking-wider border border-white/20 backdrop-blur-md transition-all flex items-center gap-2 apple-press"
               >
                 <Calendar className="w-4 h-4 text-slate-300" />
                 <span>Últimas noticias</span>
@@ -301,7 +301,7 @@ export function HeroSection() {
               </span>
             </div>
 
-            {/* Grid 2x3 con el diseño de credenciales oscuras y ribete rojo */}
+            {/* Grid 2x3 con el diseño de credenciales oscuras y ribete rojo con Apple Press */}
             <div className="grid grid-cols-2 gap-3">
               {dependenciasEspeciales.map((item) => {
                 const Icon = item.icon;
@@ -309,7 +309,7 @@ export function HeroSection() {
                   <Link
                     key={item.id}
                     href={item.href}
-                    className={`relative group overflow-hidden rounded-2xl bg-gradient-to-br ${item.bgGradient} p-3.5 border ${item.borderColor} shadow-xl hover:shadow-2xl transition-all duration-200 transform hover:-translate-y-1 flex flex-col justify-between min-h-[110px]`}
+                    className={`relative group overflow-hidden rounded-2xl bg-gradient-to-br ${item.bgGradient} p-3.5 border ${item.borderColor} shadow-xl hover:shadow-2xl transition-all duration-200 transform hover:-translate-y-0.5 apple-press-subtle flex flex-col justify-between min-h-[110px]`}
                   >
                     {/* Cinta de Marca Superior */}
                     <div className="flex items-center justify-between gap-1 mb-2">

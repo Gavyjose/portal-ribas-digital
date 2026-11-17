@@ -149,16 +149,16 @@ export function MapaIncidenciasSection() {
   return (
     <section id="mapa-incidencias" className="py-16 lg:py-24 bg-white border-t border-slate-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
-        {/* Cabecera estilo Caracas */}
+        {/* Cabecera estilo Caracas con Tipografía Óptica Apple */}
         <div className="text-center max-w-3xl mx-auto space-y-2">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold uppercase tracking-wider">
             <span className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse"></span>
             <span>Integración Google Maps en Vivo</span>
           </div>
-          <h2 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight uppercase">
-            REPORTE E INCIDENCIAS DE RESIDUOS
+          <h2 className="text-2xl sm:text-4xl font-black text-slate-900 apple-title-display">
+            Reporte e Incidencias de Residuos
           </h2>
-          <p className="text-sm text-slate-600">
+          <p className="text-sm text-slate-600 apple-subheading">
             Visualiza los focos de acumulación de residuos reportados por la comunidad en Google Maps. Cada punto representa un sector que requiere o ha recibido la atención de las cuadrillas de Ribas Limpia y Bonita.
           </p>
         </div>
@@ -166,11 +166,11 @@ export function MapaIncidenciasSection() {
         {/* Layout en dos columnas: Panel de Control (Izquierda) + Google Maps (Derecha) */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* ============================================================== */}
-          {/* PANEL DE CONTROL IZQUIERDO ESTILO CARACAS                      */}
+          {/* PANEL DE CONTROL IZQUIERDO CON APPLE GLASS                     */}
           {/* ============================================================== */}
-          <div className="lg:col-span-4 bg-slate-50 border border-slate-200 rounded-3xl p-6 space-y-6 shadow-sm">
+          <div className="lg:col-span-4 apple-glass-card rounded-3xl p-6 space-y-6 shadow-md">
             {/* Título de Tarjeta con Badge EN VIVO */}
-            <div className="flex items-center justify-between border-b border-slate-200 pb-4">
+            <div className="flex items-center justify-between border-b border-slate-200/80 pb-4">
               <div className="flex items-center gap-2">
                 <Truck className="w-5 h-5 text-emerald-600" />
                 <h3 className="font-extrabold text-slate-900 text-sm">
@@ -183,9 +183,9 @@ export function MapaIncidenciasSection() {
               </span>
             </div>
 
-            {/* Contadores Numéricos de Estados */}
+            {/* Contadores Numéricos de Estados con Apple Press Subtle */}
             <div className="grid grid-cols-3 gap-2 text-center">
-              <div className="bg-white p-3 rounded-2xl border border-rose-200 shadow-sm">
+              <div className="bg-white/90 p-3 rounded-2xl border border-rose-200/80 shadow-xs apple-press-subtle">
                 <span className="text-2xl font-black text-rose-600 block">
                   {conteoCriticos}
                 </span>
@@ -193,7 +193,7 @@ export function MapaIncidenciasSection() {
                   Focos Activos
                 </span>
               </div>
-              <div className="bg-white p-3 rounded-2xl border border-amber-200 shadow-sm">
+              <div className="bg-white/90 p-3 rounded-2xl border border-amber-200/80 shadow-xs apple-press-subtle">
                 <span className="text-2xl font-black text-amber-500 block">
                   {conteoEnAtencion}
                 </span>
@@ -201,7 +201,7 @@ export function MapaIncidenciasSection() {
                   En Atención
                 </span>
               </div>
-              <div className="bg-white p-3 rounded-2xl border border-emerald-200 shadow-sm">
+              <div className="bg-white/90 p-3 rounded-2xl border border-emerald-200/80 shadow-xs apple-press-subtle">
                 <span className="text-2xl font-black text-emerald-600 block">
                   {conteoAtendidos}
                 </span>
@@ -211,17 +211,17 @@ export function MapaIncidenciasSection() {
               </div>
             </div>
 
-            {/* Selector de Modo de Visualización (Capas Google Maps) */}
+            {/* Selector de Modo de Visualización (Control Segmentado Apple) */}
             <div className="space-y-2">
               <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 block">
                 Capa de Google Maps
               </span>
-              <div className="grid grid-cols-3 gap-1.5 p-1 bg-white rounded-2xl border border-slate-200">
+              <div className="grid grid-cols-3 gap-1.5 p-1 bg-slate-100/90 rounded-2xl border border-slate-200/70">
                 <button
                   onClick={() => setModoVisualizacion("calles")}
-                  className={`py-2 rounded-xl text-[11px] font-bold transition-all flex items-center justify-center gap-1 ${
+                  className={`py-2 rounded-xl text-[11px] font-bold transition-all duration-120 apple-press flex items-center justify-center gap-1 ${
                     modoVisualizacion === "calles"
-                      ? "bg-[#0a2540] text-amber-400 shadow"
+                      ? "bg-[#0a2540] text-amber-400 shadow-sm"
                       : "text-slate-600 hover:text-slate-900"
                   }`}
                 >
@@ -230,9 +230,9 @@ export function MapaIncidenciasSection() {
                 </button>
                 <button
                   onClick={() => setModoVisualizacion("satelite")}
-                  className={`py-2 rounded-xl text-[11px] font-bold transition-all flex items-center justify-center gap-1 ${
+                  className={`py-2 rounded-xl text-[11px] font-bold transition-all duration-120 apple-press flex items-center justify-center gap-1 ${
                     modoVisualizacion === "satelite"
-                      ? "bg-blue-600 text-white shadow"
+                      ? "bg-blue-600 text-white shadow-sm"
                       : "text-slate-600 hover:text-slate-900"
                   }`}
                 >
@@ -241,9 +241,9 @@ export function MapaIncidenciasSection() {
                 </button>
                 <button
                   onClick={() => setModoVisualizacion("terreno")}
-                  className={`py-2 rounded-xl text-[11px] font-bold transition-all flex items-center justify-center gap-1 ${
+                  className={`py-2 rounded-xl text-[11px] font-bold transition-all duration-120 apple-press flex items-center justify-center gap-1 ${
                     modoVisualizacion === "terreno"
-                      ? "bg-emerald-600 text-white shadow"
+                      ? "bg-emerald-600 text-white shadow-sm"
                       : "text-slate-600 hover:text-slate-900"
                   }`}
                 >
@@ -329,11 +329,11 @@ export function MapaIncidenciasSection() {
               </div>
             </div>
 
-            {/* Botón Verde Prominente: Reportar basura sin recoger */}
+            {/* Botón Verde Prominente: Reportar basura sin recoger con Apple Press */}
             <div className="pt-2">
               <Link
                 href="/ribas-resuelve"
-                className="w-full py-3.5 px-4 bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs uppercase tracking-wider rounded-2xl shadow-lg hover:shadow-emerald-500/25 flex items-center justify-center gap-2 transition-all transform hover:-translate-y-0.5"
+                className="w-full py-3.5 px-4 bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs uppercase tracking-wider rounded-2xl shadow-lg hover:shadow-emerald-500/25 flex items-center justify-center gap-2 transition-all transform hover:-translate-y-0.5 apple-press"
               >
                 <Send className="w-4 h-4" />
                 <span>Reportar basura sin recoger</span>
@@ -345,9 +345,9 @@ export function MapaIncidenciasSection() {
           {/* MAPA GOOGLE MAPS REAL CON TELEMETRÍA Y ENFOQUE (DERECHA)        */}
           {/* ============================================================== */}
           <div className="lg:col-span-8 bg-slate-900 rounded-3xl overflow-hidden border border-slate-200 shadow-xl relative min-h-[580px] flex flex-col justify-between">
-            {/* Barra superior de herramientas sobre Google Maps */}
+            {/* Barra superior de herramientas sobre Google Maps con Apple Glass Dark */}
             <div className="absolute top-4 left-4 right-4 z-20 flex items-center justify-between pointer-events-none">
-              <div className="bg-slate-900/90 backdrop-blur-md px-4 py-2 rounded-2xl text-xs font-bold text-white shadow-xl flex items-center gap-2 border border-slate-700 pointer-events-auto">
+              <div className="apple-glass-dark px-4 py-2 rounded-2xl text-xs font-bold text-white shadow-xl flex items-center gap-2 pointer-events-auto">
                 <Navigation className="w-4 h-4 text-emerald-400" />
                 <span>
                   {puntoActivo
@@ -355,7 +355,7 @@ export function MapaIncidenciasSection() {
                     : `Municipio José Félix Ribas • ${parroquiaSeleccionada === "todas" ? "La Victoria General" : parroquiaSeleccionada}`}
                 </span>
               </div>
-              <div className="bg-slate-900/90 backdrop-blur-md px-3 py-1.5 rounded-full text-[10px] font-bold text-emerald-400 shadow-xl flex items-center gap-1.5 border border-slate-700 pointer-events-auto">
+              <div className="apple-glass-dark px-3 py-1.5 rounded-full text-[10px] font-bold text-emerald-400 shadow-xl flex items-center gap-1.5 pointer-events-auto">
                 <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
                 <span>Google Maps en Vivo</span>
               </div>
@@ -371,11 +371,11 @@ export function MapaIncidenciasSection() {
                 allowFullScreen
               />
 
-              {/* Ficha Flotante del Foco Seleccionado sobre Google Maps */}
+              {/* Ficha Flotante del Foco Seleccionado con Apple Glass Card */}
               {puntoActivo && (
-                <div className="absolute bottom-6 left-6 right-6 sm:right-auto sm:w-80 z-30 bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl p-4 text-slate-800 border border-slate-200 animate-in fade-in slide-in-from-bottom-2 duration-150">
+                <div className="absolute bottom-6 left-6 right-6 sm:right-auto sm:w-80 z-30 apple-glass-card rounded-2xl shadow-2xl p-4 text-slate-800 animate-in fade-in slide-in-from-bottom-2 duration-150">
                   <div className="flex items-center justify-between mb-2">
-                    <span className={`text-[9px] font-black uppercase px-2.5 py-0.5 rounded-full text-white ${
+                    <span className={`text-[9px] font-black uppercase px-2.5 py-0.5 rounded-full text-white shadow-xs ${
                       puntoActivo.estado === "critico"
                         ? "bg-rose-600"
                         : puntoActivo.estado === "en_atencion"
@@ -390,7 +390,7 @@ export function MapaIncidenciasSection() {
                     </span>
                     <button
                       onClick={() => setPuntoActivo(null)}
-                      className="text-slate-400 hover:text-slate-700 text-xs font-bold p-1"
+                      className="text-slate-400 hover:text-slate-700 text-xs font-bold p-1 apple-press rounded-lg"
                     >
                       ✕
                     </button>
@@ -417,7 +417,7 @@ export function MapaIncidenciasSection() {
                   <div className="mt-3">
                     <Link
                       href="/aseo"
-                      className="block text-center w-full py-1.5 bg-[#0a2540] hover:bg-slate-900 text-amber-400 rounded-xl text-[11px] font-bold transition-colors"
+                      className="block text-center w-full py-2 bg-[#0a2540] hover:bg-slate-900 text-amber-400 rounded-xl text-[11px] font-bold transition-all apple-press shadow-xs"
                     >
                       Ver Rutas del Sector →
                     </Link>

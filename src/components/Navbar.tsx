@@ -36,14 +36,14 @@ export function Navbar() {
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md text-slate-800 shadow-sm border-b border-slate-200">
+    <header className="sticky top-0 z-50 apple-glass text-slate-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
-          {/* Logo Institucional estilo Alcaldía de Caracas */}
+          {/* Logo Institucional estilo Alcaldía de Caracas con Apple Press */}
           <Link
             href="/"
             onClick={closeDropdowns}
-            className="flex items-center gap-3.5 group select-none"
+            className="flex items-center gap-3.5 group select-none apple-press"
           >
             {/* Emblema con Estrella y Colores Patrios de Ribas */}
             <div className="relative w-12 h-12 rounded-xl bg-gradient-to-br from-[#0a2540] to-[#123961] p-0.5 shadow flex items-center justify-center transition-transform group-hover:scale-105">
@@ -80,10 +80,10 @@ export function Navbar() {
             <Link
               href="/"
               onClick={closeDropdowns}
-              className={`px-3 py-2 rounded-lg text-xs font-bold transition-colors ${
+              className={`px-3 py-2 rounded-xl text-xs font-bold transition-all duration-120 apple-press ${
                 pathname === "/"
-                  ? "text-blue-700 bg-blue-50/80"
-                  : "text-slate-700 hover:text-[#0a2540] hover:bg-slate-100"
+                  ? "text-blue-700 bg-blue-50/80 shadow-xs"
+                  : "text-slate-700 hover:text-[#0a2540] hover:bg-slate-100/80"
               }`}
             >
               Inicio
@@ -96,10 +96,10 @@ export function Navbar() {
               onMouseLeave={() => setDropdownAlcaldia(false)}
             >
               <button
-                className={`px-3 py-2 rounded-lg text-xs font-bold flex items-center gap-1 transition-colors ${
+                className={`px-3 py-2 rounded-xl text-xs font-bold flex items-center gap-1 transition-all duration-120 apple-press ${
                   pathname.startsWith("/admin") || dropdownAlcaldia
-                    ? "text-blue-700 bg-blue-50/80"
-                    : "text-slate-700 hover:text-[#0a2540] hover:bg-slate-100"
+                    ? "text-blue-700 bg-blue-50/80 shadow-xs"
+                    : "text-slate-700 hover:text-[#0a2540] hover:bg-slate-100/80"
                 }`}
               >
                 <span>Alcaldía</span>
@@ -107,7 +107,7 @@ export function Navbar() {
               </button>
 
               {dropdownAlcaldia && (
-                <div className="absolute top-full left-0 w-64 bg-white rounded-2xl shadow-xl border border-slate-200 py-2 mt-0 animate-in fade-in slide-in-from-top-1 duration-150 z-50">
+                <div className="absolute top-full left-0 w-64 apple-glass-card rounded-2xl shadow-2xl py-2 mt-1 animate-in fade-in zoom-in-95 duration-150 origin-top z-50">
                   <div className="px-3 py-1.5 text-[10px] font-extrabold uppercase text-slate-400 border-b border-slate-100">
                     Estructura y Despacho
                   </div>
@@ -155,10 +155,10 @@ export function Navbar() {
               onMouseLeave={() => setDropdownMunicipio(false)}
             >
               <button
-                className={`px-3 py-2 rounded-lg text-xs font-bold flex items-center gap-1 transition-colors ${
+                className={`px-3 py-2 rounded-xl text-xs font-bold flex items-center gap-1 transition-all duration-120 apple-press ${
                   pathname === "/municipio" || dropdownMunicipio
-                    ? "text-blue-700 bg-blue-50/80"
-                    : "text-slate-700 hover:text-[#0a2540] hover:bg-slate-100"
+                    ? "text-blue-700 bg-blue-50/80 shadow-xs"
+                    : "text-slate-700 hover:text-[#0a2540] hover:bg-slate-100/80"
                 }`}
               >
                 <span>Municipio</span>
@@ -166,7 +166,7 @@ export function Navbar() {
               </button>
 
               {dropdownMunicipio && (
-                <div className="absolute top-full left-0 w-64 bg-white rounded-2xl shadow-xl border border-slate-200 py-2 mt-0 animate-in fade-in slide-in-from-top-1 duration-150 z-50">
+                <div className="absolute top-full left-0 w-64 apple-glass-card rounded-2xl shadow-2xl py-2 mt-1 animate-in fade-in zoom-in-95 duration-150 origin-top z-50">
                   <div className="px-3 py-1.5 text-[10px] font-extrabold uppercase text-slate-400 border-b border-slate-100">
                     Territorio e Historia
                   </div>
@@ -200,10 +200,10 @@ export function Navbar() {
             <Link
               href="/tramites"
               onClick={closeDropdowns}
-              className={`px-3 py-2 rounded-lg text-xs font-bold transition-colors ${
+              className={`px-3 py-2 rounded-xl text-xs font-bold transition-all duration-120 apple-press ${
                 pathname === "/tramites"
-                  ? "text-blue-700 bg-blue-50/80"
-                  : "text-slate-700 hover:text-[#0a2540] hover:bg-slate-100"
+                  ? "text-blue-700 bg-blue-50/80 shadow-xs"
+                  : "text-slate-700 hover:text-[#0a2540] hover:bg-slate-100/80"
               }`}
             >
               Trámites
@@ -213,9 +213,9 @@ export function Navbar() {
             <Link
               href="/ribas-resuelve"
               onClick={closeDropdowns}
-              className={`px-3 py-2 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-colors ${
+              className={`px-3 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all duration-120 apple-press ${
                 pathname === "/ribas-resuelve"
-                  ? "text-rose-700 bg-rose-50"
+                  ? "text-rose-700 bg-rose-50 shadow-xs"
                   : "text-slate-700 hover:text-rose-700 hover:bg-rose-50/60"
               }`}
             >
@@ -227,9 +227,9 @@ export function Navbar() {
             <Link
               href="/aseo"
               onClick={closeDropdowns}
-              className={`px-3 py-2 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-colors ${
+              className={`px-3 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all duration-120 apple-press ${
                 pathname === "/aseo"
-                  ? "text-emerald-700 bg-emerald-50"
+                  ? "text-emerald-700 bg-emerald-50 shadow-xs"
                   : "text-slate-700 hover:text-emerald-700 hover:bg-emerald-50/60"
               }`}
             >
@@ -241,22 +241,22 @@ export function Navbar() {
             <Link
               href="/gacetas"
               onClick={closeDropdowns}
-              className={`px-3 py-2 rounded-lg text-xs font-bold transition-colors ${
+              className={`px-3 py-2 rounded-xl text-xs font-bold transition-all duration-120 apple-press ${
                 pathname === "/gacetas"
-                  ? "text-blue-700 bg-blue-50/80"
-                  : "text-slate-700 hover:text-[#0a2540] hover:bg-slate-100"
+                  ? "text-blue-700 bg-blue-50/80 shadow-xs"
+                  : "text-slate-700 hover:text-[#0a2540] hover:bg-slate-100/80"
               }`}
             >
               Gacetas
             </Link>
 
-            {/* Botón Principal Oficina Virtual / Usuario Único */}
-            <div className="ml-3 pl-3 border-l border-slate-200 flex items-center gap-2">
+            {/* Botón Principal Oficina Virtual / Usuario Único con Apple Press */}
+            <div className="ml-3 pl-3 border-l border-slate-200/80 flex items-center gap-2">
               {usuario ? (
                 <div className="flex items-center gap-1.5">
                   <Link
                     href="/oficina-virtual/dashboard"
-                    className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-sm transition-all"
+                    className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-sm transition-all apple-press"
                   >
                     <User className="w-3.5 h-3.5" />
                     <span className="max-w-[120px] truncate">{usuario.nombre.split(" ")[0]}</span>
@@ -264,7 +264,7 @@ export function Navbar() {
                   <button
                     onClick={logout}
                     title="Cerrar sesión"
-                    className="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-colors"
+                    className="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-colors apple-press"
                   >
                     <LogOut className="w-3.5 h-3.5" />
                   </button>
@@ -272,7 +272,7 @@ export function Navbar() {
               ) : (
                 <Link
                   href="/oficina-virtual"
-                  className="px-4 py-2 rounded-xl bg-[#0a2540] hover:bg-slate-900 text-amber-400 font-bold text-xs shadow-sm hover:shadow transition-all flex items-center gap-2"
+                  className="px-4 py-2 rounded-xl bg-[#0a2540] hover:bg-slate-900 text-amber-400 font-bold text-xs shadow-sm hover:shadow transition-all flex items-center gap-2 apple-press"
                 >
                   <ShieldCheck className="w-4 h-4 text-amber-400" />
                   <span>Oficina Virtual</span>
@@ -281,18 +281,18 @@ export function Navbar() {
             </div>
           </nav>
 
-          {/* Menú Móvil Botón */}
+          {/* Menú Móvil Botón Ergonómico (44x44pt mínimo) */}
           <div className="flex lg:hidden items-center gap-2">
             <Link
               href={usuario ? "/oficina-virtual/dashboard" : "/oficina-virtual"}
-              className="px-3 py-1.5 bg-[#0a2540] text-amber-400 font-bold text-xs rounded-xl shadow flex items-center gap-1.5"
+              className="px-3 py-2 bg-[#0a2540] text-amber-400 font-bold text-xs rounded-xl shadow flex items-center gap-1.5 min-h-[44px] apple-press"
             >
               <ShieldCheck className="w-3.5 h-3.5" />
               <span>{usuario ? usuario.nombre.split(" ")[0] : "Oficina"}</span>
             </Link>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 focus:outline-none"
+              className="min-w-[44px] min-h-[44px] p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 flex items-center justify-center focus:outline-none apple-press"
               aria-label="Menú principal"
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -301,9 +301,9 @@ export function Navbar() {
         </div>
       </div>
 
-      {/* Menú Móvil Desplegable */}
+      {/* Menú Móvil Desplegable con Apple Glass */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-white border-t border-slate-200 px-4 pt-3 pb-6 space-y-2 shadow-xl animate-in fade-in duration-200">
+        <div className="lg:hidden apple-glass border-t border-slate-200 px-4 pt-3 pb-6 space-y-2 shadow-2xl animate-in fade-in slide-in-from-top-2 duration-150">
           <Link
             href="/"
             onClick={() => setMobileMenuOpen(false)}

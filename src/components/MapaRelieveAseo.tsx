@@ -212,11 +212,11 @@ export function MapaRelieveAseo() {
           </p>
         </div>
 
-        {/* Selector de Modos de Mapa: Google Maps Terreno / Satélite / Calles / Táctico */}
+        {/* Selector de Modos de Mapa: Google Maps Terreno / Satélite / Calles / Táctico (Control Segmentado Apple) */}
         <div className="flex flex-wrap items-center gap-1.5 p-1 bg-slate-800/90 rounded-2xl border border-slate-700">
           <button
             onClick={() => setTipoMapa("google-terreno")}
-            className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+            className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all duration-120 apple-press flex items-center gap-1.5 ${
               tipoMapa === "google-terreno"
                 ? "bg-emerald-600 text-white shadow-md"
                 : "text-slate-300 hover:text-white hover:bg-slate-700/50"
@@ -228,7 +228,7 @@ export function MapaRelieveAseo() {
 
           <button
             onClick={() => setTipoMapa("google-satelite")}
-            className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+            className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all duration-120 apple-press flex items-center gap-1.5 ${
               tipoMapa === "google-satelite"
                 ? "bg-blue-600 text-white shadow-md"
                 : "text-slate-300 hover:text-white hover:bg-slate-700/50"
@@ -240,7 +240,7 @@ export function MapaRelieveAseo() {
 
           <button
             onClick={() => setTipoMapa("google-calles")}
-            className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+            className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all duration-120 apple-press flex items-center gap-1.5 ${
               tipoMapa === "google-calles"
                 ? "bg-slate-700 text-white shadow-md"
                 : "text-slate-300 hover:text-white hover:bg-slate-700/50"
@@ -252,7 +252,7 @@ export function MapaRelieveAseo() {
 
           <button
             onClick={() => setTipoMapa("simulador")}
-            className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+            className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all duration-120 apple-press flex items-center gap-1.5 ${
               tipoMapa === "simulador"
                 ? "bg-amber-500 text-slate-950 shadow-md"
                 : "text-slate-300 hover:text-white hover:bg-slate-700/50"
@@ -271,7 +271,7 @@ export function MapaRelieveAseo() {
         <div className="flex items-center gap-3">
           <button
             onClick={() => setEstaReproduciendo(!estaReproduciendo)}
-            className={`w-9 h-9 rounded-xl flex items-center justify-center font-bold transition-all shadow ${
+            className={`w-9 h-9 rounded-xl flex items-center justify-center font-bold transition-all shadow apple-press ${
               estaReproduciendo
                 ? "bg-amber-500 text-slate-950"
                 : "bg-emerald-600 text-white hover:bg-emerald-500"
@@ -482,18 +482,18 @@ export function MapaRelieveAseo() {
             </div>
           </div>
 
-          {/* Botones de Acción */}
+          {/* Botones de Acción con Apple Press */}
           <div className="mt-3 pt-2 border-t border-slate-800 flex items-center gap-2">
             <a
               href={`tel:${cuadrillaEnTurno.telefono.replace(/-/g, "")}`}
-              className="flex-1 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold text-center flex items-center justify-center gap-1.5 shadow transition-colors"
+              className="flex-1 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold text-center flex items-center justify-center gap-1.5 shadow transition-all apple-press"
             >
               <Phone className="w-3.5 h-3.5" />
               <span>Llamar al Coordinador ({cuadrillaEnTurno.telefono})</span>
             </a>
             <button
               onClick={() => saltarASector(cuadrillaEnTurno.queryGoogleMaps, cuadrillaEnTurno.sectorActual, cuadrillaEnTurno)}
-              className="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-amber-400 rounded-xl text-xs font-bold transition-colors"
+              className="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-amber-400 rounded-xl text-xs font-bold transition-all apple-press"
               title="Centrar en Google Maps"
             >
               <Navigation className="w-3.5 h-3.5" />

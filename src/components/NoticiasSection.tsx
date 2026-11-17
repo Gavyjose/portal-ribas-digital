@@ -68,12 +68,12 @@ export function NoticiasSection() {
   return (
     <section id="noticias" className="py-16 lg:py-24 bg-white border-t border-slate-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
-        {/* Cabecera de Sección estilo Caracas */}
+        {/* Cabecera de Sección estilo Caracas con Tipografía Óptica Apple */}
         <div className="text-center max-w-3xl mx-auto space-y-2">
-          <h2 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight uppercase">
-            NOTICIAS RECIENTES
+          <h2 className="text-2xl sm:text-4xl font-black text-slate-900 apple-title-display">
+            Noticias Recientes
           </h2>
-          <p className="text-sm text-slate-600">
+          <p className="text-sm text-slate-600 apple-subheading">
             Sigue de cerca las obras de vialidad, jornadas sociales, cultura y despliegues de la Alcaldía de Ribas.
           </p>
         </div>
@@ -238,7 +238,7 @@ export function NoticiasSection() {
             {noticiasSecundarias.map((n) => (
               <div
                 key={n.id}
-                className="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm hover:shadow-md transition-all group flex gap-3.5 items-center"
+                className="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm hover:shadow-md transition-all group flex gap-3.5 items-center apple-press-subtle"
               >
                 <div className="relative w-20 h-20 rounded-xl overflow-hidden shrink-0 bg-slate-100">
                   <Image
@@ -266,11 +266,11 @@ export function NoticiasSection() {
             ))}
           </div>
 
-          {/* Botón Central estilo Caracas: "Ver todas las noticias" */}
+          {/* Botón Central estilo Caracas con Apple Press */}
           <div className="text-center pt-2">
             <Link
               href="/gacetas"
-              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full border-2 border-blue-600 text-blue-700 hover:bg-blue-600 hover:text-white font-bold text-xs uppercase tracking-wider transition-all shadow-sm"
+              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full border-2 border-blue-600 text-blue-700 hover:bg-blue-600 hover:text-white font-bold text-xs uppercase tracking-wider transition-all shadow-sm apple-press"
             >
               <span>Ver todas las noticias y comunicados</span>
               <ArrowRight className="w-3.5 h-3.5" />

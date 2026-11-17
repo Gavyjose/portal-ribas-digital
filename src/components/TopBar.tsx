@@ -29,8 +29,8 @@ export function TopBar() {
   ];
 
   return (
-    <div className="bg-[#051a2e] text-slate-200 text-xs py-1.5 px-3 sm:px-6 border-b border-slate-800/80 shadow-inner flex items-center justify-between gap-3 overflow-hidden select-none">
-      {/* Badge de Alertas estilo Caracas */}
+    <div className="bg-[#051a2e]/95 backdrop-blur-md text-slate-200 text-xs py-1.5 px-3 sm:px-6 border-b border-slate-800/80 shadow-inner flex items-center justify-between gap-3 overflow-hidden select-none">
+      {/* Badge de Alertas estilo Caracas con Apple Press */}
       <div className="flex items-center gap-2 shrink-0 z-10">
         <div className="flex items-center gap-1.5 px-2.5 py-0.5 bg-red-600 text-white font-black text-[10px] tracking-wider uppercase rounded shadow-sm">
           <span className="relative flex h-2 w-2">
@@ -50,7 +50,7 @@ export function TopBar() {
             <Link
               key={`a1-${idx}`}
               href={al.link}
-              className="hover:text-amber-400 transition-colors flex items-center gap-2 shrink-0 cursor-pointer"
+              className="hover:text-amber-400 transition-colors flex items-center gap-2 shrink-0 cursor-pointer apple-press"
             >
               <span className="text-amber-400 font-bold">•</span>
               <span>{al.text}</span>
@@ -62,7 +62,7 @@ export function TopBar() {
             <Link
               key={`a2-${idx}`}
               href={al.link}
-              className="hover:text-amber-400 transition-colors flex items-center gap-2 shrink-0 cursor-pointer"
+              className="hover:text-amber-400 transition-colors flex items-center gap-2 shrink-0 cursor-pointer apple-press"
             >
               <span className="text-amber-400 font-bold">•</span>
               <span>{al.text}</span>
@@ -71,11 +71,11 @@ export function TopBar() {
         </div>
       </div>
 
-      {/* Enlace rápido de Emergencia */}
+      {/* Enlace rápido de Emergencia con Apple Press */}
       <div className="hidden lg:flex items-center gap-3 shrink-0 z-10 text-[11px] border-l border-slate-700/80 pl-3">
         <a
           href="tel:02444174115"
-          className="flex items-center gap-1.5 text-emerald-400 hover:text-emerald-300 font-bold transition-colors"
+          className="flex items-center gap-1.5 text-emerald-400 hover:text-emerald-300 font-bold transition-all apple-press py-0.5 px-1.5 rounded-lg hover:bg-emerald-500/10"
         >
           <Phone className="w-3 h-3" />
           <span>Sede Central: 0244-4174115</span>

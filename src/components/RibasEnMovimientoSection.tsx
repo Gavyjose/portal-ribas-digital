@@ -90,17 +90,17 @@ export function RibasEnMovimientoSection() {
   return (
     <section id="ribas-en-movimiento" className="py-16 lg:py-20 bg-slate-50 border-t border-slate-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-        {/* Cabecera idéntica a Caracas en Movimiento */}
+        {/* Cabecera con Tipografía Óptica Apple */}
         <div className="text-center max-w-3xl mx-auto space-y-2">
-          <h2 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight uppercase">
-            RIBAS EN MOVIMIENTO
+          <h2 className="text-2xl sm:text-4xl font-black text-slate-900 apple-title-display">
+            Ribas en Movimiento
           </h2>
-          <p className="text-sm text-slate-600">
+          <p className="text-sm text-slate-600 apple-subheading">
             Recorrido y operaciones de la ciudad: autopistas y recolección de residuos.
           </p>
         </div>
 
-        {/* Barra de Filtros y Controles de Navegación estilo Caracas */}
+        {/* Barra de Filtros y Controles de Navegación (Control Segmentado Apple) */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2">
           {/* Botones de Filtro */}
           <div className="inline-flex p-1 bg-white border border-slate-200 rounded-full shadow-sm">
@@ -109,7 +109,7 @@ export function RibasEnMovimientoSection() {
                 setActiveFilter("todos");
                 setPaginaActual(0);
               }}
-              className={`px-5 py-2 rounded-full text-xs font-bold transition-all ${
+              className={`px-5 py-2 rounded-full text-xs font-bold transition-all duration-120 apple-press ${
                 activeFilter === "todos"
                   ? "bg-[#0a2540] text-amber-400 shadow"
                   : "text-slate-600 hover:text-slate-900"
@@ -122,7 +122,7 @@ export function RibasEnMovimientoSection() {
                 setActiveFilter("autopistas");
                 setPaginaActual(0);
               }}
-              className={`px-5 py-2 rounded-full text-xs font-bold transition-all flex items-center gap-1.5 ${
+              className={`px-5 py-2 rounded-full text-xs font-bold transition-all duration-120 apple-press flex items-center gap-1.5 ${
                 activeFilter === "autopistas"
                   ? "bg-blue-600 text-white shadow"
                   : "text-slate-600 hover:text-slate-900"
@@ -136,7 +136,7 @@ export function RibasEnMovimientoSection() {
                 setActiveFilter("recoleccion");
                 setPaginaActual(0);
               }}
-              className={`px-5 py-2 rounded-full text-xs font-bold transition-all flex items-center gap-1.5 ${
+              className={`px-5 py-2 rounded-full text-xs font-bold transition-all duration-120 apple-press flex items-center gap-1.5 ${
                 activeFilter === "recoleccion"
                   ? "bg-emerald-600 text-white shadow"
                   : "text-slate-600 hover:text-slate-900"
