@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
   MessageSquare,
   Bot,
@@ -50,7 +51,7 @@ export function RibasBotWidget() {
       id: "inicio-1",
       remitente: "bot",
       texto:
-        "¡Hola! Soy RibasBot 🤖, el asistente virtual oficial de la Alcaldía de José Félix Ribas. ¿En qué puedo ayudarte hoy?",
+        "¡Saludos, vecino y patriota! Soy el General José Félix Ribas ⚔️, tu asistente cívico virtual oficial de la Alcaldía.\n\n*«¡No podemos optar entre vencer o morir, necesario es vencer!»*\n\n¿En qué trámite, servicio o consulta sobre La Victoria y las 5 parroquias puedo orientarte hoy?",
       hora: "Ahora",
       sugerencias: [
         "🚛 ¿Cuándo pasa el aseo?",
@@ -351,15 +352,24 @@ export function RibasBotWidget() {
       {/* BOTÓN FLOTANTE Y PILL DE BIENVENIDA (ESQUINA INFERIOR DERECHA) */}
       {/* ============================================================== */}
       <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-2.5 select-none">
-        {/* Pill de Bienvenida Proactivo estilo Apple */}
+        {/* Pill de Bienvenida Proactivo estilo Apple con Avatar de José Félix Ribas */}
         {!abierto && mostrarPill && (
           <div
             onClick={() => setAbierto(true)}
-            className="apple-glass-card px-4 py-2.5 rounded-2xl shadow-xl flex items-center gap-2.5 cursor-pointer max-w-xs animate-in fade-in slide-in-from-bottom-2 duration-200 apple-press"
+            className="apple-glass-card px-3.5 py-2.5 rounded-2xl shadow-2xl flex items-center gap-3 cursor-pointer max-w-xs animate-in fade-in slide-in-from-bottom-2 duration-200 apple-press border border-amber-400/40"
           >
-            <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse shrink-0"></div>
+            <div className="relative w-9 h-9 rounded-xl overflow-hidden ring-2 ring-amber-400 shadow shrink-0 bg-slate-900">
+              <Image
+                src="/images/avatar-ribas.png"
+                alt="José Félix Ribas"
+                width={36}
+                height={36}
+                className="w-full h-full object-cover object-top scale-105"
+              />
+              <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-500 border-2 border-white"></span>
+            </div>
             <p className="text-xs font-semibold text-slate-800 leading-snug">
-              ¿Dudas con tu sector de aseo o trámites? <strong>RibasBot</strong> te responde al instante.
+              ¡Saludos! Soy <strong>José Félix Ribas</strong>. ¿En qué trámite o servicio de La Victoria puedo orientarte?
             </p>
             <button
               onClick={(e) => {
@@ -373,30 +383,43 @@ export function RibasBotWidget() {
           </div>
         )}
 
-        {/* Botón Principal Disparador de RibasBot */}
+        {/* Botón Principal Disparador de RibasBot con Avatar de José Félix Ribas */}
         <button
           onClick={() => {
             setAbierto(!abierto);
             setMostrarPill(false);
           }}
-          className={`relative p-3.5 rounded-2xl shadow-2xl flex items-center gap-2.5 transition-all duration-200 apple-press min-h-[48px] min-w-[48px] ${
+          className={`relative p-2.5 sm:px-4 sm:py-2.5 rounded-2xl shadow-2xl flex items-center gap-2.5 transition-all duration-200 apple-press min-h-[52px] ${
             abierto
               ? "bg-slate-900 text-white border border-slate-700"
-              : "bg-gradient-to-br from-[#0a2540] to-[#123961] text-amber-400 border border-amber-400/30 ring-4 ring-amber-400/20"
+              : "bg-gradient-to-br from-[#0a2540] via-[#0e3155] to-[#0a2540] text-amber-400 border-2 border-amber-400/50 ring-4 ring-amber-400/20 shadow-xl"
           }`}
-          aria-label="Abrir asistente virtual RibasBot"
+          aria-label="Abrir asistente virtual José Félix Ribas"
         >
           {abierto ? (
-            <X className="w-6 h-6" />
+            <X className="w-6 h-6 text-white" />
           ) : (
             <>
-              <div className="relative">
-                <Bot className="w-6 h-6 text-amber-400" />
-                <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-emerald-500 border-2 border-[#0a2540]"></span>
+              <div className="relative w-8 h-8 rounded-xl overflow-hidden ring-2 ring-amber-400/90 shadow shrink-0 bg-slate-800">
+                <Image
+                  src="/images/avatar-ribas.png"
+                  alt="José Félix Ribas"
+                  width={32}
+                  height={32}
+                  className="w-full h-full object-cover object-top scale-105"
+                  priority
+                />
+                <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-500 border-2 border-[#0a2540]"></span>
               </div>
-              <span className="text-xs font-extrabold text-white uppercase tracking-wider hidden sm:inline">
-                RibasBot
-              </span>
+              <div className="flex flex-col text-left hidden sm:flex leading-tight">
+                <span className="text-xs font-black text-white uppercase tracking-wider flex items-center gap-1">
+                  <span>RibasBot</span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                </span>
+                <span className="text-[9px] text-amber-300 font-bold uppercase tracking-tight">
+                  José Félix Ribas
+                </span>
+              </div>
             </>
           )}
         </button>
@@ -407,25 +430,32 @@ export function RibasBotWidget() {
       {/* ============================================================== */}
       {abierto && (
         <div className="fixed bottom-24 right-4 sm:right-6 z-50 w-[calc(100vw-32px)] sm:w-[420px] max-h-[82vh] h-[620px] apple-glass-card rounded-3xl shadow-2xl flex flex-col overflow-hidden border border-white/80 animate-in fade-in zoom-in-95 duration-150 origin-bottom-right">
-          {/* Cabecera Institucional RibasBot */}
+          {/* Cabecera Institucional RibasBot con Avatar de José Félix Ribas */}
           <div className="bg-gradient-to-r from-[#06182a] via-[#0a2540] to-[#0d2e4e] text-white p-4 flex items-center justify-between border-b border-white/10 shrink-0">
             <div className="flex items-center gap-3">
-              <div className="relative w-10 h-10 rounded-2xl bg-[#0a2540] border border-amber-400/40 p-1 flex items-center justify-center shadow">
-                <Bot className="w-6 h-6 text-amber-400" />
+              <div className="relative w-11 h-11 rounded-2xl overflow-hidden ring-2 ring-amber-400/80 shadow shrink-0 bg-slate-800">
+                <Image
+                  src="/images/avatar-ribas.png"
+                  alt="General José Félix Ribas"
+                  width={44}
+                  height={44}
+                  className="w-full h-full object-cover object-top scale-105"
+                  priority
+                />
                 <span className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-500 rounded-full border-2 border-[#0a2540]"></span>
               </div>
               <div>
                 <div className="flex items-center gap-1.5">
                   <h3 className="font-black text-sm text-white tracking-tight">
-                    RibasBot
+                    José Félix Ribas
                   </h3>
-                  <span className="text-[9px] font-bold bg-amber-400/20 text-amber-300 border border-amber-400/30 px-1.5 py-0.2 rounded uppercase">
-                    Alcaldía
+                  <span className="text-[9px] font-extrabold bg-amber-400/20 text-amber-300 border border-amber-400/30 px-1.5 py-0.2 rounded uppercase">
+                    RibasBot
                   </span>
                 </div>
                 <p className="text-[10px] text-slate-300 flex items-center gap-1">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-                  En línea • Municipio José Félix Ribas
+                  Asistente Cívico Oficial • Municipio José Félix Ribas
                 </p>
               </div>
             </div>
@@ -460,45 +490,59 @@ export function RibasBotWidget() {
                   m.remitente === "usuario" ? "items-end" : "items-start"
                 } space-y-1`}
               >
-                {/* Burbuja de Mensaje */}
-                <div
-                  className={`max-w-[88%] p-3.5 rounded-2xl text-xs sm:text-sm leading-relaxed shadow-xs ${
-                    m.remitente === "usuario"
-                      ? "bg-gradient-to-r from-[#0a2540] to-[#123961] text-white rounded-br-xs"
-                      : "bg-white text-slate-800 border border-slate-200/90 rounded-bl-xs"
-                  }`}
-                >
-                  <div className="whitespace-pre-line font-normal">{m.texto}</div>
-
-                  {/* Botón de Enlace Accionable */}
-                  {m.enlaceAccion && (
-                    <div className="mt-3 pt-2 border-t border-slate-100">
-                      <Link
-                        href={m.enlaceAccion.url}
-                        onClick={() => setAbierto(false)}
-                        className="inline-flex items-center justify-between w-full py-2 px-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-xs transition-all apple-press"
-                      >
-                        <span>{m.enlaceAccion.texto}</span>
-                        <ChevronRight className="w-3.5 h-3.5" />
-                      </Link>
+                {/* Burbuja de Mensaje con Avatar para el Bot */}
+                <div className={`flex items-start gap-2 w-full ${m.remitente === "usuario" ? "justify-end" : "justify-start"}`}>
+                  {m.remitente === "bot" && (
+                    <div className="relative w-7 h-7 rounded-lg overflow-hidden ring-1 ring-amber-400/80 shadow-xs shrink-0 mt-0.5 bg-slate-900">
+                      <Image
+                        src="/images/avatar-ribas.png"
+                        alt="José Félix Ribas"
+                        width={28}
+                        height={28}
+                        className="w-full h-full object-cover object-top scale-105"
+                      />
                     </div>
                   )}
 
-                  {/* Botón de Llamada Telefónica Directa */}
-                  {m.telefonoAccion && (
-                    <div className="mt-2">
-                      <a
-                        href={`tel:${m.telefonoAccion.numero}`}
-                        className="inline-flex items-center justify-between w-full py-2 px-3 bg-[#0a2540] hover:bg-slate-900 text-amber-400 font-bold text-xs rounded-xl shadow-xs transition-all apple-press"
-                      >
-                        <span className="flex items-center gap-1.5">
-                          <Phone className="w-3.5 h-3.5" />
-                          <span>{m.telefonoAccion.nombre}</span>
-                        </span>
-                        <span className="font-mono text-[11px]">{m.telefonoAccion.numero}</span>
-                      </a>
-                    </div>
-                  )}
+                  <div
+                    className={`max-w-[85%] p-3.5 rounded-2xl text-xs sm:text-sm leading-relaxed shadow-xs ${
+                      m.remitente === "usuario"
+                        ? "bg-gradient-to-r from-[#0a2540] to-[#123961] text-white rounded-br-xs"
+                        : "bg-white text-slate-800 border border-slate-200/90 rounded-bl-xs"
+                    }`}
+                  >
+                    <div className="whitespace-pre-line font-normal">{m.texto}</div>
+
+                    {/* Botón de Enlace Accionable */}
+                    {m.enlaceAccion && (
+                      <div className="mt-3 pt-2 border-t border-slate-100">
+                        <Link
+                          href={m.enlaceAccion.url}
+                          onClick={() => setAbierto(false)}
+                          className="inline-flex items-center justify-between w-full py-2 px-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-xs transition-all apple-press"
+                        >
+                          <span>{m.enlaceAccion.texto}</span>
+                          <ChevronRight className="w-3.5 h-3.5" />
+                        </Link>
+                      </div>
+                    )}
+
+                    {/* Botón de Llamada Telefónica Directa */}
+                    {m.telefonoAccion && (
+                      <div className="mt-2">
+                        <a
+                          href={`tel:${m.telefonoAccion.numero}`}
+                          className="inline-flex items-center justify-between w-full py-2 px-3 bg-[#0a2540] hover:bg-slate-900 text-amber-400 font-bold text-xs rounded-xl shadow-xs transition-all apple-press"
+                        >
+                          <span className="flex items-center gap-1.5">
+                            <Phone className="w-3.5 h-3.5" />
+                            <span>{m.telefonoAccion.nombre}</span>
+                          </span>
+                          <span className="font-mono text-[11px]">{m.telefonoAccion.numero}</span>
+                        </a>
+                      </div>
+                    )}
+                  </div>
                 </div>
 
                 {/* Hora de envío */}
@@ -521,12 +565,24 @@ export function RibasBotWidget() {
               </div>
             ))}
 
-            {/* Animación de "RibasBot está escribiendo..." */}
+            {/* Animación de "RibasBot está escribiendo..." con Avatar */}
             {escribiendo && (
-              <div className="flex items-center gap-2 p-3 bg-white text-slate-500 rounded-2xl w-24 border border-slate-200 shadow-xs">
-                <span className="w-2 h-2 rounded-full bg-slate-400 animate-bounce"></span>
-                <span className="w-2 h-2 rounded-full bg-slate-400 animate-bounce [animation-delay:0.2s]"></span>
-                <span className="w-2 h-2 rounded-full bg-slate-400 animate-bounce [animation-delay:0.4s]"></span>
+              <div className="flex items-center gap-2">
+                <div className="relative w-6 h-6 rounded-md overflow-hidden ring-1 ring-amber-400/70 shadow-xs shrink-0 bg-slate-900">
+                  <Image
+                    src="/images/avatar-ribas.png"
+                    alt="José Félix Ribas"
+                    width={24}
+                    height={24}
+                    className="w-full h-full object-cover object-top"
+                  />
+                </div>
+                <div className="flex items-center gap-1.5 p-2 px-3 bg-white text-slate-500 rounded-2xl border border-slate-200 shadow-xs">
+                  <span className="w-1.5 h-1.5 rounded-full bg-blue-600 animate-bounce"></span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-blue-600 animate-bounce [animation-delay:0.2s]"></span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-blue-600 animate-bounce [animation-delay:0.4s]"></span>
+                  <span className="text-[10px] text-slate-400 font-semibold ml-1">Ribas está escribiendo...</span>
+                </div>
               </div>
             )}
 
