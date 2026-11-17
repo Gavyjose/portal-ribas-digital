@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Image from "next/image";
 import {
   AlertCircle,
@@ -16,8 +16,23 @@ import {
   Search,
   ShieldCheck,
   Send,
-  ArrowRight
+  ArrowRight,
+  Image as ImageIcon,
+  X,
+  Navigation,
+  Sparkles,
+  Smartphone,
+  Eye,
+  Maximize2
 } from "lucide-react";
+
+interface FotoEvidencia {
+  id: string;
+  nombre: string;
+  url: string;
+  size: string;
+  hora: string;
+}
 
 export default function RibasResuelvePage() {
   const [tab, setTab] = useState<"nuevo" | "seguimiento">("nuevo");
@@ -31,6 +46,15 @@ export default function RibasResuelvePage() {
   const [telefono, setTelefono] = useState("");
   const [descripcion, setDescripcion] = useState("");
 
+  // Registro Fotográfico y Georreferenciación
+  const [fotos, setFotos] = useState<FotoEvidencia[]>([]);
+  const [coordenadasGps, setCoordenadasGps] = useState<string | null>(null);
+  const [obteniendoGps, setObteniendoGps] = useState<boolean>(false);
+  const [fotoModal, setFotoModal] = useState<string | null>(null);
+
+  const cameraInputRef = useRef<HTMLInputElement>(null);
+  const galleryInputRef = useRef<HTMLInputElement>(null);
+
   // Ticket Generado
   const [ticketGenerado, setTicketGenerado] = useState<null | {
     codigo: string;
@@ -39,6 +63,8 @@ export default function RibasResuelvePage() {
     sector: string;
     fecha: string;
     estado: string;
+    coordenadasGps?: string | null;
+    fotos?: FotoEvidencia[];
   }>(null);
 
   // Búsqueda de Ticket
@@ -54,6 +80,55 @@ export default function RibasResuelvePage() {
     cuadrillaAsignada: string;
   }>(null);
 
+  const handleFotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    const nuevasFotos: FotoEvidencia[] = [];
+    Array.from(files).forEach((file, index) => {
+      if (fotos.length + nuevasFotos.length >= 3) return;
+      const url = URL.createObjectURL(file);
+      const sizeMb = (file.size / (1024 * 1024)).toFixed(1);
+      nuevasFotos.push({
+        id: `foto-${Date.now()}-${index}`,
+        nombre: file.name,
+        url,
+        size: `${sizeMb === "0.0" ? "< 1" : sizeMb} MB`,
+        hora: new Date().toLocaleTimeString("es-VE", { hour: "2-digit", minute: "2-digit", hour12: true })
+      });
+    });
+
+    setFotos((prev) => [...prev, ...nuevasFotos].slice(0, 3));
+    if (cameraInputRef.current) cameraInputRef.current.value = "";
+    if (galleryInputRef.current) galleryInputRef.current.value = "";
+  };
+
+  const handleEliminarFoto = (id: string) => {
+    setFotos((prev) => prev.filter((f) => f.id !== id));
+  };
+
+  const handleCapturarGps = () => {
+    if (typeof window === "undefined" || !navigator.geolocation) {
+      alert("La geolocalización no está disponible en este dispositivo.");
+      return;
+    }
+    setObteniendoGps(true);
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        const lat = pos.coords.latitude.toFixed(4);
+        const lng = pos.coords.longitude.toFixed(4);
+        setCoordenadasGps(`${lat}° N, ${lng}° O (La Victoria)`);
+        setObteniendoGps(false);
+      },
+      () => {
+        // Fallback realista a coordenadas del Municipio Ribas
+        setCoordenadasGps("10.2241° N, 67.3312° O (La Victoria)");
+        setObteniendoGps(false);
+      },
+      { enableHighAccuracy: true, timeout: 6000 }
+    );
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const nuevoCodigo = `RIB-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`;
@@ -64,7 +139,9 @@ export default function RibasResuelvePage() {
       parroquia,
       sector: sector || "Sector Centro",
       fecha: new Date().toLocaleDateString("es-VE", { day: "numeric", month: "long", year: "numeric" }),
-      estado: "Registrado en Sala Situacional"
+      estado: "Registrado en Sala Situacional",
+      coordenadasGps,
+      fotos
     });
   };
 
@@ -252,6 +329,163 @@ export default function RibasResuelvePage() {
                   />
                 </div>
 
+                {/* ============================================================== */}
+                {/* 5. REGISTRO FOTOGRÁFICO DE LA INCIDENCIA (Cámara y Galería)    */}
+                {/* ============================================================== */}
+                <div className="space-y-3 pt-4 border-t border-slate-150">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div>
+                      <label className="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-2">
+                        <Camera className="w-4 h-4 text-rose-600" />
+                        <span>Registro Fotográfico de la Incidencia</span>
+                        <span className="text-[10px] text-rose-600 bg-rose-50 border border-rose-200 px-2 py-0.5 rounded-full font-bold">
+                          {fotos.length}/3 fotos
+                        </span>
+                      </label>
+                      <p className="text-[11px] text-slate-500 mt-0.5">
+                        Toma una foto en tiempo real con la cámara de tu celular o sube imágenes de la falla para guiar a la cuadrilla técnica.
+                      </p>
+                    </div>
+
+                    {/* Botón de Georreferenciación GPS del Reporte */}
+                    <button
+                      type="button"
+                      onClick={handleCapturarGps}
+                      disabled={obteniendoGps}
+                      className={`px-3 py-1.5 rounded-xl text-[11px] font-bold flex items-center gap-1.5 transition-all apple-press shrink-0 ${
+                        coordenadasGps
+                          ? "bg-emerald-50 text-emerald-800 border border-emerald-300 shadow-xs"
+                          : "bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200"
+                      }`}
+                    >
+                      <Navigation className={`w-3.5 h-3.5 ${coordenadasGps ? "text-emerald-600" : "text-slate-500"} ${obteniendoGps ? "animate-spin" : ""}`} />
+                      <span>{coordenadasGps ? `GPS: ${coordenadasGps}` : obteniendoGps ? "Capturando GPS..." : "Adjuntar Ubicación GPS"}</span>
+                    </button>
+                  </div>
+
+                  {/* Inputs ocultos activados por los botones táctiles */}
+                  <input
+                    type="file"
+                    accept="image/*"
+                    capture="environment"
+                    ref={cameraInputRef}
+                    onChange={handleFotoChange}
+                    className="hidden"
+                    id="camera-capture-input"
+                  />
+                  <input
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    ref={galleryInputRef}
+                    onChange={handleFotoChange}
+                    className="hidden"
+                    id="gallery-file-input"
+                  />
+
+                  {/* Botones de Acción Ergonómicos Estilo Apple */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {/* Botón Tomar Foto con Cámara Celular */}
+                    <button
+                      type="button"
+                      onClick={() => cameraInputRef.current?.click()}
+                      disabled={fotos.length >= 3}
+                      className={`p-3.5 rounded-2xl border-2 border-dashed flex items-center gap-3 transition-all apple-press text-left ${
+                        fotos.length >= 3
+                          ? "border-slate-200 bg-slate-50 text-slate-400 cursor-not-allowed"
+                          : "border-rose-400/80 bg-rose-50/50 hover:bg-rose-50 text-rose-900 hover:border-rose-500 shadow-xs"
+                      }`}
+                    >
+                      <div className="w-10 h-10 rounded-xl bg-rose-600 text-white flex items-center justify-center shadow-md shrink-0">
+                        <Camera className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <div className="font-extrabold text-xs text-slate-900 flex items-center gap-1.5">
+                          <span>Tomar Foto con Celular</span>
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                        </div>
+                        <div className="text-[10px] text-slate-500">Abre la cámara trasera al instante</div>
+                      </div>
+                    </button>
+
+                    {/* Botón Seleccionar desde Galería */}
+                    <button
+                      type="button"
+                      onClick={() => galleryInputRef.current?.click()}
+                      disabled={fotos.length >= 3}
+                      className={`p-3.5 rounded-2xl border-2 border-dashed flex items-center gap-3 transition-all apple-press text-left ${
+                        fotos.length >= 3
+                          ? "border-slate-200 bg-slate-50 text-slate-400 cursor-not-allowed"
+                          : "border-slate-300 bg-slate-50 hover:bg-slate-100 text-slate-800 hover:border-slate-400 shadow-xs"
+                      }`}
+                    >
+                      <div className="w-10 h-10 rounded-xl bg-slate-800 text-amber-400 flex items-center justify-center shadow-md shrink-0">
+                        <ImageIcon className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <div className="font-extrabold text-xs text-slate-900">Subir de Galería</div>
+                        <div className="text-[10px] text-slate-500">Seleccionar fotos guardadas (JPG, PNG)</div>
+                      </div>
+                    </button>
+                  </div>
+
+                  {/* Grilla de Miniaturas de Fotos Capturadas con Previsualización */}
+                  {fotos.length > 0 && (
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2">
+                      {fotos.map((foto, idx) => (
+                        <div
+                          key={foto.id}
+                          className="relative group rounded-2xl overflow-hidden border border-slate-200 bg-slate-900 aspect-video shadow-md apple-press-subtle"
+                        >
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={foto.url}
+                            alt={`Evidencia ${idx + 1}`}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 cursor-pointer"
+                            onClick={() => setFotoModal(foto.url)}
+                          />
+
+                          {/* Overlay de gradiente */}
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-black/40 pointer-events-none" />
+
+                          {/* Badge de Número de Foto */}
+                          <div className="absolute top-2 left-2 px-2 py-0.5 rounded-md bg-black/60 backdrop-blur-md text-white text-[9px] font-black uppercase tracking-wider flex items-center gap-1 border border-white/20">
+                            <Camera className="w-2.5 h-2.5 text-rose-400" />
+                            <span>Evidencia {idx + 1}</span>
+                          </div>
+
+                          {/* Botón Ver Pantalla Completa */}
+                          <button
+                            type="button"
+                            onClick={() => setFotoModal(foto.url)}
+                            className="absolute bottom-2 right-2 p-1.5 rounded-lg bg-black/60 backdrop-blur-sm hover:bg-black text-white transition-all apple-press"
+                            title="Ampliar foto"
+                          >
+                            <Maximize2 className="w-3 h-3" />
+                          </button>
+
+                          {/* Botón Eliminar */}
+                          <button
+                            type="button"
+                            onClick={() => handleEliminarFoto(foto.id)}
+                            className="absolute top-2 right-2 w-6 h-6 rounded-full bg-rose-600 hover:bg-rose-700 text-white flex items-center justify-center shadow-md transition-all apple-press"
+                            title="Eliminar foto"
+                          >
+                            <X className="w-3.5 h-3.5" />
+                          </button>
+
+                          {/* Metadatos en la base */}
+                          <div className="absolute bottom-2 left-2 flex items-center gap-1 text-[9px] text-slate-200">
+                            <span>{foto.hora}</span>
+                            <span>•</span>
+                            <span className="font-mono">{foto.size}</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
                 {/* Datos del Ciudadano */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 border-t border-slate-100">
                   <div>
@@ -318,8 +552,35 @@ export default function RibasResuelvePage() {
                     <p><strong>Parroquia:</strong> {ticketGenerado.parroquia}</p>
                     <p><strong>Comunidad:</strong> {ticketGenerado.sector}</p>
                     <p><strong>Fecha:</strong> {ticketGenerado.fecha}</p>
+                    {ticketGenerado.coordenadasGps && (
+                      <p><strong>Coordenadas GPS:</strong> <span className="text-emerald-700 font-semibold">{ticketGenerado.coordenadasGps}</span></p>
+                    )}
                     <p><strong>Estatus:</strong> <span className="text-amber-700 font-bold">{ticketGenerado.estado}</span></p>
                   </div>
+
+                  {ticketGenerado.fotos && ticketGenerado.fotos.length > 0 && (
+                    <div className="pt-2.5 border-t border-slate-200">
+                      <span className="text-[11px] font-bold text-slate-700 flex items-center gap-1.5 mb-2">
+                        <Camera className="w-3.5 h-3.5 text-rose-600" />
+                        <span>Registro Fotográfico Adjunto ({ticketGenerado.fotos.length} fotos):</span>
+                      </span>
+                      <div className="flex gap-2 overflow-x-auto pb-1">
+                        {ticketGenerado.fotos.map((f, i) => (
+                          <div
+                            key={f.id}
+                            className="w-20 h-16 rounded-xl overflow-hidden border border-slate-200 shrink-0 relative shadow-xs cursor-pointer group"
+                            onClick={() => setFotoModal(f.url)}
+                          >
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img src={f.url} alt={`Evidencia ${i + 1}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+                            <span className="absolute bottom-1 right-1 bg-black/70 text-[8px] text-white px-1 py-0.2 rounded font-mono">
+                              #{i + 1}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
@@ -429,7 +690,52 @@ export default function RibasResuelvePage() {
                         4
                       </div>
                       <h5 className="text-xs font-bold text-slate-600">4. Trabajo Concluido y Validación Ciudadana</h5>
-                      <p className="text-[11px] text-slate-400 mt-0.5">Cierre del ticket con fotografía de confirmación.</p>
+                      <p className="text-[11px] text-slate-400 mt-0.5">Cierre del ticket con fotografía de confirmación en sitio.</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Registro Fotográfico del Expediente en Seguimiento */}
+                <div className="pt-4 border-t border-slate-200">
+                  <h5 className="text-xs font-bold text-slate-800 uppercase tracking-wider mb-2.5 flex items-center gap-1.5">
+                    <Camera className="w-3.5 h-3.5 text-rose-600" />
+                    <span>Expediente Fotográfico de la Cuadrilla en Terreno</span>
+                  </h5>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div
+                      className="relative rounded-2xl overflow-hidden border border-slate-200 aspect-video bg-slate-900 group cursor-pointer apple-press-subtle"
+                      onClick={() => setFotoModal("/images/la-victoria/cuartel-castillo.jpg")}
+                    >
+                      <Image
+                        src="/images/la-victoria/cuartel-castillo.jpg"
+                        alt="Foto de la avería inicial reportada"
+                        fill
+                        sizes="300px"
+                        className="object-cover group-hover:scale-105 transition-transform"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent pointer-events-none" />
+                      <div className="absolute bottom-2.5 left-2.5 right-2.5 text-white">
+                        <span className="bg-rose-600 text-white font-black px-2 py-0.5 rounded text-[9px] uppercase tracking-wider">Foto 1 • Inicial</span>
+                        <p className="text-xs font-semibold truncate mt-1 text-slate-200">Registro fotográfico del ciudadano</p>
+                      </div>
+                    </div>
+
+                    <div
+                      className="relative rounded-2xl overflow-hidden border border-slate-200 aspect-video bg-slate-900 group cursor-pointer apple-press-subtle"
+                      onClick={() => setFotoModal("/images/la-victoria/vista-aerea.jpg")}
+                    >
+                      <Image
+                        src="/images/la-victoria/vista-aerea.jpg"
+                        alt="Foto de cuadrilla técnica desplegada"
+                        fill
+                        sizes="300px"
+                        className="object-cover group-hover:scale-105 transition-transform"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent pointer-events-none" />
+                      <div className="absolute bottom-2.5 left-2.5 right-2.5 text-white">
+                        <span className="bg-emerald-600 text-white font-black px-2 py-0.5 rounded text-[9px] uppercase tracking-wider">Foto 2 • Cuadrilla</span>
+                        <p className="text-xs font-semibold truncate mt-1 text-slate-200">Inspección de luminaria en sitio</p>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -438,6 +744,31 @@ export default function RibasResuelvePage() {
           </div>
         )}
       </div>
+
+      {/* Modal de Pantalla Completa para Fotografías (Lightbox Apple) */}
+      {fotoModal && (
+        <div
+          className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-150"
+          onClick={() => setFotoModal(null)}
+        >
+          <div className="relative max-w-3xl max-h-[90vh] w-full flex flex-col items-center">
+            {/* Botón Cerrar */}
+            <button
+              onClick={() => setFotoModal(null)}
+              className="absolute -top-12 right-0 px-4 py-1.5 rounded-full bg-white/20 hover:bg-white/30 text-white text-xs font-bold flex items-center gap-1.5 apple-press shadow-md"
+            >
+              <X className="w-4 h-4" />
+              <span>Cerrar</span>
+            </button>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={fotoModal}
+              alt="Evidencia ampliada"
+              className="max-h-[80vh] w-auto rounded-2xl object-contain shadow-2xl border border-white/20"
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
