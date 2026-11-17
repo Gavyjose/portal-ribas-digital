@@ -4,6 +4,7 @@ import "./globals.css";
 import { TopBar } from "@/components/TopBar";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { RibasBotWidget } from "@/components/RibasBotWidget";
 import { AuthProvider } from "@/context/AuthContext";
 
 const geistSans = Geist({
@@ -52,6 +53,7 @@ export default function RootLayout({
           <Navbar />
           <main className="flex-1">{children}</main>
           <Footer />
+          <RibasBotWidget />
         </AuthProvider>
       </body>
     </html>
