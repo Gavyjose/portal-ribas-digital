@@ -3,11 +3,38 @@
 
 Plataforma oficial de gobierno electrónico (*e-Gov*) y atención ciudadana desarrollada con **Next.js 16 (App Router)**, **React 19**, **TypeScript** y **Tailwind CSS**.
 
+🌐 **Sitio Web en Producción:** [https://portal-ribas-digital.vercel.app](https://portal-ribas-digital.vercel.app)
+
 ---
 
 ## 🏛️ Características Principales
 
-1. **Oficina Virtual & Usuario Único (`/oficina-virtual` y `/oficina-virtual/dashboard`):**
+1. **RibasBot • Asistente Virtual Cívico con Avatar del General José Félix Ribas:**
+   * Widget interactivo con diseño *Apple Glass* flotante en todas las páginas.
+   * Motor de respuestas inteligentes en lenguaje natural sobre cronogramas de aseo, solvencias, obras públicas y reportes.
+   * Integración directa con líneas telefónicas de emergencia y canal oficial de WhatsApp.
+   * Avatar heroico de José Félix Ribas y mensaje de bienvenida inspirado en la Batalla de La Victoria (*«¡No podemos optar entre vencer o morir, necesario es vencer!»*).
+
+2. **Trámites por "Momentos de Vida" (`/tramites`):**
+   * Rediseño cívico basado en los estándares internacionales de **Singapur LifeSG** y **GOV.UK**.
+   * Rutas unificadas: *Apertura de Negocio en 1-Clic, Vivienda e Inmueble, Familia y Registro Civil, Vehículos y Movilidad*.
+   * Checklist interactivo con barra de porcentaje de preparación para verificar recaudos antes de consignar.
+   * Descarga directa de planillas oficiales en PDF y catálogo tradicional por dependencias.
+
+3. **Monitor de Obras Públicas y Presupuesto Transparente (`/obras`):**
+   * Inspirado en **BA Obras** (Buenos Aires), **Decide Madrid** y **Medellín Transparente**.
+   * Tablero con KPIs en vivo: 38 proyectos, 24 culminados, 12.450+ toneladas de asfalto, 9 pozos de agua y 3.200+ luminarias LED.
+   * Filtros por las 5 Parroquias y por categoría (Vialidad, Agua, Alumbrado, Deporte, Patrimonio).
+   * **Comparador interactivo Antes / Después** con fotografías reales del estado inicial y resultado de la obra.
+   * Buzón de veeduría y contraloría social para que los vecinos califiquen y dejen reportes a la Sala Situacional.
+
+4. **Ribas Resuelve con Cámara Móvil y GPS (`/ribas-resuelve`):**
+   * Reporte de incidencias de servicios públicos (alumbrado, agua, vialidad, aseo).
+   * **Captura fotográfica directa desde la cámara del celular** o galería con visor de previsualización (hasta 3 fotos por ticket).
+   * Geolocalización GPS automática mediante el navegador para guiar a las cuadrillas en sitio.
+   * Generación de tickets únicos correlativos (`RIB-2026-XXXX`) con línea de tiempo interactiva.
+
+5. **Oficina Virtual & Usuario Único (`/oficina-virtual` y `/oficina-virtual/dashboard`):**
    * Cuenta única para contribuyentes (personas naturales y jurídicas) con aislamiento estricto de privacidad y secreto tributario.
    * Consulta protegida de estados de cuenta de Hacienda Municipal, Catastro y Fichas Inmobiliarias.
    * Generación y descarga de certificados de solvencia con Hash SHA-256, firma digital y Código QR.
